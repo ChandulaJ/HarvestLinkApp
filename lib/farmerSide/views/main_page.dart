@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:harvest_delivery/views/home_screen.dart';
-import 'package:harvest_delivery/views/item_screen.dart';
-import 'package:harvest_delivery/views/order_screen.dart';
-import 'package:harvest_delivery/views/settings_screen.dart';
+import 'package:harvest_delivery/farmerSide/views/home_screen.dart';
+import 'package:harvest_delivery/farmerSide/views/item_screen.dart';
+import 'package:harvest_delivery/farmerSide/views/order_screen.dart';
+import 'package:harvest_delivery/farmerSide/views/settings_screen.dart';
+
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key, required this.title}) : super(key: key);
