@@ -8,13 +8,13 @@ import 'account_page.dart';
 import 'cart_page.dart';
 import 'home_page.dart';
 
-class MainPage extends StatefulWidget {
+class CustomerMainPage extends StatefulWidget {
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<CustomerMainPage> createState() => _CustomerMainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _CustomerMainPageState extends State<CustomerMainPage> {
 
   final HomePageController controller = Get.put(HomePageController());
 

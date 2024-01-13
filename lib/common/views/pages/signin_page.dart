@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:harvest_delivery/common/views/components/farmerCustomerSelector.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/common/views/pages/signup_page.dart';
+import 'package:harvest_delivery/farmerSide/views/main_page.dart';
 
 import 'package:sign_in_button/sign_in_button.dart';
 
@@ -17,6 +18,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool _obscurePassword = true;
+  bool farmerSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +117,7 @@ class _SignInPageState extends State<SignInPage> {
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => MainPage());
+                        farmerSelected? Get.to(() => FarmerMainPage(title: "Harvest-Link")) : Get.to(() => CustomerMainPage());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
