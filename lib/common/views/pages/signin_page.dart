@@ -37,10 +37,10 @@ class _SignInPageState extends State<SignInPage> {
                     fontSize: 30,
                   ),
                 ),
+                const SizedBox(height: 20.0),
+                SingleUserSelector(),
 
-                SingleSelector(),
-
-                const SizedBox(height: 16),
+                const SizedBox(height: 16.0),
 
                 // Email
                 TextFormField(
