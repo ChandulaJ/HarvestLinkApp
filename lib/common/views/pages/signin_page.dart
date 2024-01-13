@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:harvest_delivery/common/views/components/farmerCustomerSelector.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/common/views/pages/signup_page.dart';
 
@@ -37,6 +38,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
 
+                SingleSelector(),
 
                 const SizedBox(height: 16),
 
@@ -135,7 +137,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-
                             // Navigate to the Sign In screen
                             Get.to(() => SignUpPage());
                           },
@@ -172,10 +173,10 @@ class _SignInPageState extends State<SignInPage> {
 
                 SignInButton(
                   Buttons.google,
-                  onPressed: (){
+                  onPressed: () {
                     //TODO: signin btn logic
                   },
-                   ),
+                ),
               ],
             ),
           ),
