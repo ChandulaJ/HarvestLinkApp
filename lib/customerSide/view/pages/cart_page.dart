@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-import '../components/empty_cart_tile.dart';
+import '../components/empty_cart.dart';
+import '../components/filled_cart.dart';
 
 class CartPage extends StatelessWidget {
   CartPage({super.key});
 
-  bool cartIsEmpty = true;
+  bool cartIsEmpty = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class CartPage extends StatelessWidget {
             ),
 
             // if the cart is empty
-            EmptyCart()
+           cartIsEmpty? EmptyCart():FilledCart()
           ],
         ),
       ),
