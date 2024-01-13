@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    homePageController.setContext(context);
     return Obx(() {
       String searchValue = homePageController.searchValue.toString();
       List<ProductDataModel> filteredProducts =

@@ -53,6 +53,7 @@ class HomePageTile extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
+
                       onPressed: () {homePageController.cartAddBtnPressed(product_index);},
                       icon: Icon(Icons.shopping_cart_outlined)),
                 ],
