@@ -44,6 +44,7 @@ dependencies:
   get: ^4.6.6
   sign_in_button: ^3.2.0
   group_button: ^5.3.4
+  flutter_svg_provider: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/customerSide/view/images/
+    - lib/common/views/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
