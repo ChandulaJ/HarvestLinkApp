@@ -26,8 +26,10 @@ class _SignInPageState extends State<SignInPage> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment:MainAxisAlignment.spaceAround,
+
               children: [
+
                 // Title
                 Text(
                   "Welcome Back",
@@ -37,10 +39,10 @@ class _SignInPageState extends State<SignInPage> {
                     fontSize: 30,
                   ),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 30.0),
                 SingleUserSelector(),
 
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 30.0),
 
                 // Email
                 TextFormField(
@@ -142,41 +144,6 @@ class _SignInPageState extends State<SignInPage> {
                           },
                       ),
                     ])),
-
-                const SizedBox(height: 16),
-
-                // Divider with line
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: const Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.black54,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child:
-                            Text("OR", style: TextStyle(color: Colors.black54)),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                SignInButton(
-                  Buttons.google,
-                  onPressed: () {
-                    //TODO: signin btn logic
-                  },
-                ),
               ],
             ),
           ),
