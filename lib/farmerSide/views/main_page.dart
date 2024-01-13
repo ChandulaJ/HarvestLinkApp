@@ -5,16 +5,16 @@ import 'package:harvest_delivery/farmerSide/views/order_screen.dart';
 import 'package:harvest_delivery/farmerSide/views/settings_screen.dart';
 
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
+class FarmerMainPage extends StatefulWidget {
+  const FarmerMainPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MainPage> createState() => _MyHomePageState();
+  State<FarmerMainPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MainPage> {
+class _MyHomePageState extends State<FarmerMainPage> {
   int _selectedIndex =
       0; // Index of the currently selected bottom navigation item
 
