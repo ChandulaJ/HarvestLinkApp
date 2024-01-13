@@ -25,6 +25,7 @@ class HomePageController extends GetxController {
 
   void cartAddBtnPressed(int index) {
     cartController.cartItems.add(marketItems[index]);
+    print("cartadd pressed");
   }
 
   List<String> getMarketItemNames() {

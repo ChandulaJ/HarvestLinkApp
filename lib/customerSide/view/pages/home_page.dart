@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
             img: product.imageUrl,
             productName: product.name,
             price: product.price,
+            product_index: index,
           );
         },
       );
