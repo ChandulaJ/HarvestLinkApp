@@ -8,12 +8,20 @@ import 'account_page.dart';
 import 'cart_page.dart';
 import 'home_page.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
   final HomePageController controller = Get.put(HomePageController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: Obx(() {
@@ -40,27 +48,32 @@ class MainPage extends StatelessWidget {
           : controller.selectedTabIndex.value == 1
           ? CartPage()
           : AccountPage()),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: controller.selectedTabIndex.value,
-        onTap: (index) {
-          controller.setSelectedTabIndex(index);
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_rounded),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Account',
-          ),
-        ],
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: Colors.grey,
+      bottomNavigationBar: Obx(
+        ()=> BottomNavigationBar(
+          currentIndex: controller.selectedTabIndex.value,
+          onTap: (index) {
+            controller.setSelectedTabIndex(index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_rounded),
+              label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'Account',
+            ),
+          ],
+
+          //currentIndex: _selectedIndex,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Colors.grey,
+          //onTap: _onItemTapped,
+        ),
       ),
     );
   }

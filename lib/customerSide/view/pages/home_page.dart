@@ -25,6 +25,7 @@ class HomePage extends StatelessWidget {
             price: product.price,
           );
         },
+
       );
     });
   }
