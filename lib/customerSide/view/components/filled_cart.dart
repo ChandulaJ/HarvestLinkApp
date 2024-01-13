@@ -1,19 +1,31 @@
-import 'package:flutter/cupertino.dart';
-import 'package:harvest_delivery/customerSide/view/components/cart_tile.dart';
+import 'package:flutter/material.dart';
+import 'package:harvest_delivery/customerSide/controller/cart_page_controller.dart';
+import 'package:harvest_delivery/customerSide/models/product_data_model.dart';
+import 'cart_tile.dart';
 
 class FilledCart extends StatelessWidget {
-  const FilledCart({super.key});
+  final List<ProductDataModel> cartItems;
+
+  FilledCart({required this.cartItems});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            CartTile(price: 10.0,productName: " vegetablelevege table vegetable  getablevegetable",img: "lib/customerSide/view/images/cucumber.jpg",)
+    return Expanded(
+      child: ListView.builder(
+        itemCount: cartItems.length,
+        itemBuilder: (context, index) {
+          ProductDataModel product = cartItems[index];
 
-          ],
-        )
+          return Padding(
+            padding: const EdgeInsets.only(top: 10.0,),
+            child: CartTile(
+              img: product.imageUrl,
+              productName: product.name,
+              price: product.price,
+            ),
+          );
+        },
+      ),
     );
   }
 }

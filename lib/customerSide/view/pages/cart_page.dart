@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:harvest_delivery/customerSide/view/components/cart_tile.dart';
+import 'package:harvest_delivery/customerSide/controller/cart_page_controller.dart';
 
-
+import '../../models/product_data_model.dart';
 import '../components/empty_cart.dart';
 import '../components/filled_cart.dart';
 
 class CartPage extends StatelessWidget {
-  CartPage({super.key});
-
-  bool cartIsEmpty = false;
+  final CartPageController cartController = Get.put(CartPageController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,19 @@ class CartPage extends StatelessWidget {
             ),
             Text(
               "Your Cart",
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold, fontSize: 30.0),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
               textAlign: TextAlign.left,
             ),
+            Obx(() {
+              List<ProductDataModel> cartItems = cartController.getCartItems();
 
-            // if the cart is empty
-           cartIsEmpty? EmptyCart():FilledCart()
+              return cartItems.isEmpty
+                  ? EmptyCart()
+                  : FilledCart(cartItems: cartItems);
+            }),
           ],
         ),
       ),
