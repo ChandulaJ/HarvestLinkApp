@@ -48,6 +48,8 @@ class CartTile extends StatelessWidget {
 
                     child: Text(
                       productName,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style: TextStyle(
                         fontSize: 15.0,

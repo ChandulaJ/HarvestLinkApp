@@ -1,5 +1,9 @@
+import 'package:get/get.dart';
+
 import '../models/product_data_model.dart';
 
-class CartPageController{
-  List<ProductDataModel> cartItems = [];
+class CartPageController {
+  final CartPageController cartController = Get.put(CartPageController());
+
+  final RxList<ProductDataModel> cartItems = <ProductDataModel>[].obs;
 }
