@@ -4,7 +4,8 @@ import 'package:group_button/group_button.dart';
 enum UserMode { farmer, buyer }
 
 class SingleUserSelector extends StatefulWidget {
-  const SingleUserSelector({Key? key}) : super(key: key);
+  final void Function(bool) onSelectionChanged;
+  const SingleUserSelector({Key? key, required this.onSelectionChanged}) : super(key: key);
 
   @override
   State<SingleUserSelector> createState() => _SingleUserSelectorState();
@@ -30,6 +31,7 @@ class _SingleUserSelectorState extends State<SingleUserSelector> {
         setState(() {
 
           userview = newSelection.first;
+          widget.onSelectionChanged(userview == UserMode.farmer);
         });
       },
     );

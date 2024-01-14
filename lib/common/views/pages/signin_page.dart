@@ -19,7 +19,11 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   bool _obscurePassword = true;
   bool farmerSelected = true;
-
+  void updateFarmerSelected(bool value) {
+    setState(() {
+      farmerSelected = value;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +55,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   const SizedBox(height: 30.0),
-                  SingleUserSelector(),
+                  SingleUserSelector(onSelectionChanged: updateFarmerSelected),
 
                   const SizedBox(height: 30.0),
 
