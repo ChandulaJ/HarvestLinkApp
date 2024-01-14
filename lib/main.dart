@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
 
 import 'common/views/pages/signin_page.dart';
 import 'farmerSide/views/main_page.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const MainPage(title: 'Harvest Link'),
-      home:SignInPage(),
+      //home:SignInPage(),
+      home:OrderPlacedPage(),
     );
   }
 }
