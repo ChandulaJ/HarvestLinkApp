@@ -24,7 +24,7 @@ class HomePageTile extends StatelessWidget {
       margin: EdgeInsets.all(10.0),
       padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(20.0),
           border: Border.all(color: Colors.black)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,6 +33,7 @@ class HomePageTile extends StatelessWidget {
             height: 200.0,
             width: double.maxFinite,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
                 image:
                     DecorationImage(fit: BoxFit.cover, image: AssetImage(img))),
           ),

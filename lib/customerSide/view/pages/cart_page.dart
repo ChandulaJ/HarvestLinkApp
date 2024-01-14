@@ -24,7 +24,7 @@ class CartPage extends StatelessWidget {
                 "Your Cart",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 30.0,
+                  fontSize: 25.0,
                 ),
                 textAlign: TextAlign.left,
               ),
