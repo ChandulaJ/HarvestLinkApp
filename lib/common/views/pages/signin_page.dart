@@ -18,7 +18,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool _obscurePassword = true;
-  bool farmerSelected = true;
+  bool farmerSelected = false;
   void updateFarmerSelected(bool value) {
     setState(() {
       farmerSelected = value;
