@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:harvest_delivery/customerSide/view/pages/more_details_page.dart';
 
 import '../../controller/home_page_controller.dart';
 
@@ -54,9 +55,10 @@ class HomePageTile extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-
-                      onPressed: () {homePageController.cartAddBtnPressed(product_index);},
-                      icon: Icon(Icons.shopping_cart_outlined)),
+                    onPressed: () {  Get.to(MoreDetailsPage(itemIndex: product_index, product: homePageController.marketItems[product_index]));
+                    ;},
+                     // onPressed: () {homePageController.cartAddBtnPressed(product_index);},
+                      icon: Icon(Icons.add_circle,size: 40,),),
                 ],
               )
             ],
