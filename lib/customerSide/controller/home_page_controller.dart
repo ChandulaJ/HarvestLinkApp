@@ -1,35 +1,52 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:harvest_delivery/customerSide/data/repositories/market_repo.dart';
 import 'package:harvest_delivery/customerSide/view/pages/cart_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
 import 'cart_page_controller.dart';
 import '../models/product_data_model.dart';
 
 class HomePageController extends GetxController {
-    final MarketRepository _repository = MarketRepository();
-  late BuildContext context;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   final CartPageController cartController = Get.put(CartPageController());
-  late BuildContext homecontext;
+  late BuildContext context;
   static HomePageController instance =
       Get.find<HomePageController>(); // Add this line
 
-  final RxList<ProductDataModel> marketItems = <ProductDataModel>[].obs;
+  final RxList<ProductDataModel> marketItems = <ProductDataModel>[
+    ProductDataModel(
+        id: "001",
+        name: "Grapes",
+        price: 5000.0,
+        imageUrl: "lib/customerSide/view/images/grapes.jpg", unit: 'g'),
+
+    ProductDataModel(
+        id: "002",
+        name: "Carrots",
+        price: 60.0,
+        imageUrl: "lib/customerSide/view/images/carrot.jpg", unit: 'g'),
+    ProductDataModel(
+        id: "003",
+        name: "Cucumber",
+        price: 70.0,
+        imageUrl: "lib/customerSide/view/images/cucumber.jpg", unit: 'g'),
+    ProductDataModel(
+        id: "004",
+        name: "Lettuce",
+        price: 80.0,
+        imageUrl: "lib/customerSide/view/images/lettuce.jpg", unit: 'g'),
+    ProductDataModel(
+        id: "005",
+        name: "Onions",
+        price: 90.0,
+        imageUrl: "lib/customerSide/view/images/onions.jpg", unit: 'g'),
+    ProductDataModel(
+        id: "006",
+        name: "Tomato",
+        price: 100.0,
+        imageUrl: "lib/customerSide/view/images/tomato.jpeg", unit: 'g'),
+  ].obs;
 
   final RxInt selectedTabIndex = 0.obs;
   final RxString searchValue = ''.obs;
-
- Future<void> fetchData() async {
-    try {
-      List<ProductDataModel> marketItems = await _repository.fetchMarketItems();
-      this.marketItems.assignAll(marketItems);
-    } catch (e) {
-      print("Error fetching market items: $e");
-    }
-  }
 
   void cartAddBtnPressed(int index) {
     cartController.cartItems.add(marketItems[index]);

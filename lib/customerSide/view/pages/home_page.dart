@@ -4,20 +4,9 @@ import '../../controller/home_page_controller.dart';
 import '../../models/product_data_model.dart';
 import '../components/homepage_tile.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   final HomePageController homePageController = Get.find();
 
-  @override
-  void initState() {
-    super.initState();
-    homePageController.setContext(context);
-    homePageController.fetchData(); 
-  }
   @override
   Widget build(BuildContext context) {
     homePageController.setContext(context);
