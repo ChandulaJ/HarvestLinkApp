@@ -8,40 +8,41 @@ import '../models/product_data_model.dart';
 class HomePageController extends GetxController {
   final CartPageController cartController = Get.put(CartPageController());
   late BuildContext context;
-  static HomePageController instance = Get.find<HomePageController>(); // Add this line
-
+  static HomePageController instance =
+      Get.find<HomePageController>(); // Add this line
 
   final RxList<ProductDataModel> marketItems = <ProductDataModel>[
     ProductDataModel(
         id: "001",
         name: "Grapes",
-        price: 50.0,
-        imageUrl: "lib/customerSide/view/images/grapes.jpg"),
+        price: 5000.0,
+        imageUrl: "lib/customerSide/view/images/grapes.jpg", unit: 'g'),
+
     ProductDataModel(
         id: "002",
         name: "Carrots",
         price: 60.0,
-        imageUrl: "lib/customerSide/view/images/carrot.jpg"),
+        imageUrl: "lib/customerSide/view/images/carrot.jpg", unit: 'g'),
     ProductDataModel(
         id: "003",
         name: "Cucumber",
         price: 70.0,
-        imageUrl: "lib/customerSide/view/images/cucumber.jpg"),
+        imageUrl: "lib/customerSide/view/images/cucumber.jpg", unit: 'g'),
     ProductDataModel(
         id: "004",
         name: "Lettuce",
         price: 80.0,
-        imageUrl: "lib/customerSide/view/images/lettuce.jpg"),
+        imageUrl: "lib/customerSide/view/images/lettuce.jpg", unit: 'g'),
     ProductDataModel(
         id: "005",
         name: "Onions",
         price: 90.0,
-        imageUrl: "lib/customerSide/view/images/onions.jpg"),
+        imageUrl: "lib/customerSide/view/images/onions.jpg", unit: 'g'),
     ProductDataModel(
         id: "006",
         name: "Tomato",
         price: 100.0,
-        imageUrl: "lib/customerSide/view/images/tomato.jpeg"),
+        imageUrl: "lib/customerSide/view/images/tomato.jpeg", unit: 'g'),
   ].obs;
 
   final RxInt selectedTabIndex = 0.obs;
@@ -49,12 +50,15 @@ class HomePageController extends GetxController {
 
   void cartAddBtnPressed(int index) {
     cartController.cartItems.add(marketItems[index]);
-    print("cartadd pressed");
     showSnackBar();
   }
 
   List<String> getMarketItemNames() {
     return marketItems.map((item) => item.name).toList();
+  }
+
+  ProductDataModel getMarketItemByIndex(int index) {
+    return marketItems[index];
   }
 
   List<ProductDataModel> getFilteredProducts(String searchValue) {
@@ -63,7 +67,7 @@ class HomePageController extends GetxController {
     } else {
       return marketItems
           .where((product) =>
-          product.name.toLowerCase().contains(searchValue.toLowerCase()))
+              product.name.toLowerCase().contains(searchValue.toLowerCase()))
           .toList();
     }
   }
@@ -88,6 +92,7 @@ class HomePageController extends GetxController {
   void showSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: Durations.medium4,
         content: const Text('Item added to the cart!'),
         action: SnackBarAction(
           label: 'View Cart',

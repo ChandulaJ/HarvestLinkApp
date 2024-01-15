@@ -1,43 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
-import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
-import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:harvest_delivery/customerSide/view/components/product_counter.dart';
 
-class OrderPlacedPage extends StatelessWidget {
-  const OrderPlacedPage({super.key});
+import '../../models/product_data_model.dart';
+import 'checkout_page.dart';
+
+class MoreDetailsPage extends StatelessWidget {
+  final int itemIndex;
+  final ProductDataModel product;
+
+  MoreDetailsPage({Key? key, required this.itemIndex, required this.product})
+      : super(key: key);
+
+  RxInt buycount = 0.obs;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Order Placed Successfully",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25.0,
-            ),
-            textAlign: TextAlign.left,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        leading: GestureDetector(
+          child: Icon(
+            Icons.arrow_circle_left_rounded,
+            color: Colors.black,
+            size: 40.0,
           ),
-          Lottie.asset("lib/customerSide/view/images/done_animation_btn.json"),
-          SizedBox(
-            height: 60.0,
-            width: 100.0,
-            child: FilledButton(
-              onPressed: () {
-                Get.to(CustomerMainPage());
-              },
-              child: const Text(
-                'Done',
-                style: TextStyle(fontSize: 20.0),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 250.0,
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(product.imageUrl),
               ),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Rs. ${product.price} per ${product.unit}',
+                  style: GoogleFonts.roboto(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black45),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+               
+                Obx(
+                  () => FilledButton(
+                    onPressed: () {
+                      // Add the buycount to cart or perform other actions
+                      Get.to(CheckoutPage());
+                    },
+                    child: Text(
+                      'Add ${buycount.value} to cart - LKR ${buycount.value * product.price}',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    ));
+    );
   }
 }
