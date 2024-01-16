@@ -17,6 +17,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+
+
   bool _obscurePassword = true;
   bool farmerSelected = false;
   void updateFarmerSelected(bool value) {
@@ -59,6 +61,12 @@ class _SignInPageState extends State<SignInPage> {
 
                   const SizedBox(height: 30.0),
 
+                  Form(
+                    child:Column(
+                      children: [
+
+
+
                   // Email
                   TextFormField(
                     decoration: const InputDecoration(
@@ -96,7 +104,9 @@ class _SignInPageState extends State<SignInPage> {
                           }),
                     ),
                   ),
-
+                      ],
+                    )
+                  ),
                   const SizedBox(height: 16),
 
                   // forgot password

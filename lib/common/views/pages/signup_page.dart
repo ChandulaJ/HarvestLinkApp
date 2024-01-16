@@ -1,9 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:get/get.dart';
 import 'package:harvest_delivery/common/views/pages/signin_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 
 import 'package:sign_in_button/sign_in_button.dart';
+
+import '../../controller/authFunctions.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,6 +18,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  String email = '';
+  String password = '';
+  String confirmedPassword = '';
+  String fullname = '';
+  bool login = false;
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _agreedToTerms = false;
@@ -53,82 +66,140 @@ class _SignUpPageState extends State<SignUpPage> {
                   Text("Create an account for a healthy life ..."),
 
                   const SizedBox(height: 20.0),
+
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Full name',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please Enter Full Name";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              fullname = value!;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+                        // Email
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'E-mail',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty || !value.contains('@')) {
+                              return "Please Enter Valid Email";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              email = value!;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Password
+                        TextFormField(
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                icon: Icon(_obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                }),
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return "Please Enter a Password of at least 6 letters";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              password = value!;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Confirm Password
+                        TextFormField(
+                          obscureText: _obscureConfirmPassword,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Confirm Password',
+                            suffixIcon: IconButton(
+                                icon: Icon(_obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureConfirmPassword =
+                                        !_obscureConfirmPassword;
+                                  });
+                                }),
+                          ),
+                          // validator: (value) {
+                          //   if (value! == password) {
+                          //     return null;
+                          //   } else {
+                          //     return "Passwords not matching";
+                          //   }
+                          // },
+                          onSaved: (value) {
+                            setState(() {
+                              confirmedPassword = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
                   // Name
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Username',
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-                  // Email
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'E-mail',
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Password
-                  TextFormField(
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                          icon: Icon(_obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          }),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Confirm Password
-                  TextFormField(
-                    obscureText: _obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Confirm Password',
-                      suffixIcon: IconButton(
-                          icon: Icon(_obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
-                            });
-                          }),
-                    ),
-                  ),
 
                   const SizedBox(height: 20.0),
 
@@ -136,8 +207,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Implement your button logic here
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          login
+                              ? AuthServices.signinUser(
+                                  email, password, context)
+                              : AuthServices.signupUser(
+                                  email, password, fullname, context);
+
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -170,20 +249,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // TODO: Implement the Sign In logic here
                               // Navigate to the Sign In screen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignInPage(),
-                                ),
-                              );
+                              Get.to(SignInPage());
                             },
                         ),
                       ])),
 
                   const SizedBox(height: 16),
-
 
                   // Checkbox with Terms of Service and Privacy Policy
                   Row(

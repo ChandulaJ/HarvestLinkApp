@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
+import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
+import 'package:harvest_delivery/farmerSide/views/login_screen.dart';
 
 import 'common/views/pages/signin_page.dart';
 import 'farmerSide/views/main_page.dart';
@@ -27,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+
       title: 'Harvest Link',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
@@ -35,6 +39,18 @@ class MyApp extends StatelessWidget {
       //home: const MainPage(title: 'Harvest Link'),
       home: SignInPage(),
       //home:OrderPlacedPage(),
+
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context,snapshot){
+      //     if(snapshot.hasData){
+      //       return HomePage();
+      //
+      //     }else{
+      //       return SignInPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }
