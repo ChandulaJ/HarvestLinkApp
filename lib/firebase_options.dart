@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '744982811171',
     projectId: 'harvestlink-99581',
     storageBucket: 'harvestlink-99581.appspot.com',
+    androidClientId: '744982811171-tgkqgqft528n6tqfdd9k5t70d3ehhupp.apps.googleusercontent.com',
+    iosClientId: '744982811171-0en2ll7nghnon7dfsn60btutb2a529h1.apps.googleusercontent.com',
     iosBundleId: 'com.example.harvestDelivery',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '744982811171',
     projectId: 'harvestlink-99581',
     storageBucket: 'harvestlink-99581.appspot.com',
+    androidClientId: '744982811171-tgkqgqft528n6tqfdd9k5t70d3ehhupp.apps.googleusercontent.com',
+    iosClientId: '744982811171-49lqf246qlrodam9h0bbjakipl8gq2nl.apps.googleusercontent.com',
     iosBundleId: 'com.example.harvestDelivery.RunnerTests',
   );
 }

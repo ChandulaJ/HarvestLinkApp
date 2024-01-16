@@ -12,13 +12,16 @@ import 'firebase_options.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+      options: DefaultFirebaseOptions.currentPlatform).then((FirebaseApp value)
+  =>
+      Get.put(AuthenticationRepository())
+  ,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key); 
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -31,8 +34,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const MainPage(title: 'Harvest Link'),
-      home:SignInPage(),
-     //home:OrderPlacedPage(),
+      home: SignInPage(),
+      //home:OrderPlacedPage(),
     );
   }
 }
