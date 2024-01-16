@@ -74,7 +74,7 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
                               fontSize: 30.0, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Rs. ${widget.product.price} per ${widget.product.unit}',
+                          'LKR. ${widget.product.price} per ${widget.product.unit}',
                           style: GoogleFonts.roboto(
                               fontSize: 20.0,
                               fontWeight: FontWeight.w800,
@@ -111,12 +111,12 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), // Adjust the radius here
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Adjust the radius here
                     ),
                   ),
                 ),
               ),
-
             ),
           ),
         ],
