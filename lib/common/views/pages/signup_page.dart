@@ -50,10 +50,23 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 30.0),
 
                   // tagline
-                  Text("Create an account to locate your hope with us ..."),
+                  Text("Create an account for a healthy life ..."),
 
                   const SizedBox(height: 20.0),
+                  // Name
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Username',
+                    ),
+                  ),
 
+                  const SizedBox(height: 16),
                   // Email
                   TextFormField(
                     decoration: const InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
 import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
 
 import 'common/views/pages/signin_page.dart';
@@ -11,11 +12,9 @@ import 'firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform).then((FirebaseApp value)
-  =>
-      Get.put(AuthenticationRepository())
-  ,
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then(
+    (FirebaseApp value) => Get.put(MarketProductsRepository()),
   );
   runApp(const MyApp());
 }
@@ -39,4 +38,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
