@@ -32,8 +32,14 @@ class HomePageController extends GetxController {
       }
     }
 
-  void cartAddBtnPressed(int index) {
-    cartController.cartItems.add(marketItems[index]);
+  void cartAddBtnPressed(int index,int qty) {
+    void cartAddBtnPressed(int index, int qty) {
+      cartController.cartItems.add(marketItems[index]);
+     // ProductDataModel productToAdd = marketItems[index];
+    //  productToAdd = productToAdd.copyWith(quantity: qty.toDouble());
+   //   cartController.cartItems.add(productToAdd);
+    }
+
     showSnackBar();
   }
 

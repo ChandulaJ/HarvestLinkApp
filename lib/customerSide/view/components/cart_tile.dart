@@ -4,12 +4,14 @@ class CartTile extends StatelessWidget {
   final String img;
   final String productName;
   final double price;
+  final double quantity;
 
   const CartTile({
     Key? key,
     required this.img,
     required this.productName,
     required this.price,
+    required this.quantity,
   }) : super(key: key);
 
   @override
@@ -68,7 +70,7 @@ class CartTile extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          'Rs. ' + price.toString(),
+                          'Rs.  ${(price * quantity).toString()}',
                           style: TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
