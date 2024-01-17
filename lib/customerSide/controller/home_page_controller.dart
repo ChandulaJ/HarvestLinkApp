@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:harvest_delivery/customerSide/data/repositories/market_repo.dart';
-import 'package:harvest_delivery/customerSide/view/pages/cart_page.dart';
-import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
+import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
+
 import 'cart_page_controller.dart';
 import '../models/product_data_model.dart';
 
 class HomePageController extends GetxController {
-    final MarketRepository _repository = MarketRepository();
+    final MarketProductsRepository _repository = MarketProductsRepository();
   late BuildContext context;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -22,14 +21,16 @@ class HomePageController extends GetxController {
   final RxInt selectedTabIndex = 0.obs;
   final RxString searchValue = ''.obs;
 
- Future<void> fetchData() async {
-    try {
-      List<ProductDataModel> marketItems = await _repository.fetchMarketItems();
-      this.marketItems.assignAll(marketItems);
-    } catch (e) {
-      print("Error fetching market items: $e");
+    Future<void> fetchData() async {
+      try {
+        print("fetching data");
+        List<ProductDataModel> fetchedItems =
+        await _repository.fetchMarketItems();
+        marketItems.assignAll(fetchedItems);
+      } catch (e) {
+        print("Error fetching market items: $e");
+      }
     }
-  }
 
   void cartAddBtnPressed(int index) {
     cartController.cartItems.add(marketItems[index]);
@@ -75,7 +76,7 @@ class HomePageController extends GetxController {
   void showSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: Durations.medium4,
+
         content: const Text('Item added to the cart!'),
         action: SnackBarAction(
           label: 'View Cart',

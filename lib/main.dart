@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
 import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
 import 'package:harvest_delivery/farmerSide/views/login_screen.dart';
 
@@ -37,20 +38,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       //home: const MainPage(title: 'Harvest Link'),
-      home: SignInPage(),
+     // home: SignInPage(),
       //home:OrderPlacedPage(),
+home: CustomerMainPage(),
 
-      // home: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context,snapshot){
-      //     if(snapshot.hasData){
-      //       return HomePage();
-      //
-      //     }else{
-      //       return SignInPage();
-      //     }
-      //   },
-      // ),
     );
   }
 }

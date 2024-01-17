@@ -12,4 +12,15 @@ class ProductDataModel {
     required this.imageUrl,
     required this.unit,
   });
+
+  factory ProductDataModel.fromMap(Map<String, dynamic> map) {
+    print("inside product data model");
+    return ProductDataModel(
+      id: map['id'] ?? '',
+      name: map['Name'] ?? '',
+      price: map['Price'] ?? 0.0,
+      imageUrl: map['Image'] ?? '',
+      unit: map['Unit'] ?? '',
+    );
+  }
 }

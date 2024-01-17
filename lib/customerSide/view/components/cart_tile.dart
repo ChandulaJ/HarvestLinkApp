@@ -34,10 +34,15 @@ class CartTile extends StatelessWidget {
                   width: 120.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(img),
-                    ),
+                      image: img.isNotEmpty
+                          ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(img),
+                      )
+                          : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('lib/customerSide/view/images/default_product_img.jpg'),
+                      ),
                   ),
                 ),
               ),
