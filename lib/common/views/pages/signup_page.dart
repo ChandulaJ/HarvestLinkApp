@@ -9,6 +9,7 @@ import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import '../../controller/authFunctions.dart';
+import '../components/farmerCustomerSelector.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -18,7 +19,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool farmerSelected = false;
   final _formKey = GlobalKey<FormState>();
+
+  void updateFarmerSelected(bool value) {
+    setState(() {
+      farmerSelected = value;
+    });
+  }
 
   String email = '';
   String password = '';
@@ -60,8 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(height: 30.0),
 
-                  // tagline
-                  Text("Create an account for a healthy life ..."),
+                  SingleUserSelector(onSelectionChanged: updateFarmerSelected),
 
                   const SizedBox(height: 20.0),
 
@@ -106,7 +113,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             labelText: 'E-mail',
                           ),
                           validator: (value) {
-                            if (value!.isEmpty || !value.contains('@')||!value.contains('.')) {
+                            if (value!.isEmpty ||
+                                !value.contains('@') ||
+                                !value.contains('.')) {
                               return "Please Enter Valid Email";
                             } else {
                               return null;
@@ -157,9 +166,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
 
                         const SizedBox(height: 16),
-
-
-
                       ],
                     ),
                   ),
@@ -173,7 +179,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       onPressed: () async {
-
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           login
@@ -181,7 +186,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                   email, password, context)
                               : AuthServices.signupUser(
                                   email, password, fullname, context);
-
                         }
                       },
                       style: ElevatedButton.styleFrom(

@@ -17,15 +17,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-
-
   bool _obscurePassword = true;
   bool farmerSelected = false;
+
   void updateFarmerSelected(bool value) {
     setState(() {
       farmerSelected = value;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,51 +62,47 @@ class _SignInPageState extends State<SignInPage> {
                   const SizedBox(height: 30.0),
 
                   Form(
-                    child:Column(
-                      children: [
-
-
-
-                  // Email
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                      child: Column(
+                    children: [
+                      // Email
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'E-mail',
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'E-mail',
-                    ),
-                  ),
 
-                  const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                  // Password
-                  TextFormField(
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                      // Password
+                      TextFormField(
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                              icon: Icon(_obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              }),
+                        ),
                       ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                          icon: Icon(_obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          }),
-                    ),
-                  ),
-                      ],
-                    )
-                  ),
+                    ],
+                  )),
                   const SizedBox(height: 16),
 
                   // forgot password
@@ -131,7 +127,10 @@ class _SignInPageState extends State<SignInPage> {
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       onPressed: () {
-                        farmerSelected? Get.to(() => FarmerMainPage(title: "Harvest-Link")) : Get.to(() => CustomerMainPage());
+                        farmerSelected
+                            ? Get.to(
+                                () => FarmerMainPage(title: "Harvest-Link"))
+                            : Get.to(() => CustomerMainPage());
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
