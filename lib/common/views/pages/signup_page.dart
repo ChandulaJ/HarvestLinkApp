@@ -1,9 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:get/get.dart';
 import 'package:harvest_delivery/common/views/pages/signin_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 
 import 'package:sign_in_button/sign_in_button.dart';
+
+import '../../controller/authFunctions.dart';
+import '../components/farmerCustomerSelector.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,8 +19,21 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool farmerSelected = false;
+  final _formKey = GlobalKey<FormState>();
+
+  void updateFarmerSelected(bool value) {
+    setState(() {
+      farmerSelected = value;
+    });
+  }
+
+  String email = '';
+  String password = '';
+  String fullname = '';
+  bool login = false;
+
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
   bool _agreedToTerms = false;
 
   @override
@@ -49,73 +68,109 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(height: 30.0),
 
-                  // tagline
-                  Text("Create an account to locate your hope with us ..."),
+                  SingleUserSelector(onSelectionChanged: updateFarmerSelected),
 
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 50.0),
 
-                  // Email
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'E-mail',
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Password
-                  TextFormField(
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                          icon: Icon(_obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Full name',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Please Enter Full Name";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
                             setState(() {
-                              _obscurePassword = !_obscurePassword;
+                              fullname = value!;
                             });
-                          }),
-                    ),
-                  ),
+                          },
+                        ),
 
-                  const SizedBox(height: 16),
-
-                  // Confirm Password
-                  TextFormField(
-                    obscureText: _obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      labelText: 'Confirm Password',
-                      suffixIcon: IconButton(
-                          icon: Icon(_obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
+                        const SizedBox(height: 16),
+                        // Email
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'E-mail',
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty ||
+                                !value.contains('@') ||
+                                !value.contains('.')) {
+                              return "Please Enter Valid Email";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
                             setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                              email = value!;
                             });
-                          }),
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Password
+                        TextFormField(
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                icon: Icon(_obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                }),
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return "Please Enter a Password of at least 6 letters";
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              password = value!;
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 16),
+                      ],
                     ),
                   ),
+
+                  // Name
 
                   const SizedBox(height: 20.0),
 
@@ -123,8 +178,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Implement your button logic here
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          // login
+                          //     ? AuthServices.signinUser(
+                          //         email, password, context)
+                          //     : AuthServices.signupUser(
+                          //         email, password, fullname, context);
+                          farmerSelected
+                              ? AuthServices.signupFarmer(
+                                  email, password, fullname, context)
+                              : AuthServices.signupCustomer(
+                                  email, password, fullname, context);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
@@ -157,14 +224,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // TODO: Implement the Sign In logic here
                               // Navigate to the Sign In screen
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignInPage(),
-                                ),
-                              );
+                              Get.to(SignInPage());
                             },
                         ),
                       ])),
@@ -172,49 +233,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 16),
 
 
-                  // Checkbox with Terms of Service and Privacy Policy
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _agreedToTerms,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _agreedToTerms = value ?? false;
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print("Show Policies");
-                          },
-                          child: RichText(
-                            text: const TextSpan(
-                              text: 'I agree to the ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: 'Terms of Service',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                TextSpan(text: ' and '),
-                                TextSpan(
-                                  text: 'Privacy Policy',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
