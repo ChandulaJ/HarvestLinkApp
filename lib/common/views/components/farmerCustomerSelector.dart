@@ -19,6 +19,13 @@ class _SingleUserSelectorState extends State<SingleUserSelector> {
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<UserMode>(
+        style: ButtonStyle(
+        backgroundColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+      return states.contains(MaterialState.selected)
+          ? Colors.green.shade400 // your pressed color
+          : Colors.green.shade100; // your default color
+    }),),
+
       segments: const <ButtonSegment<UserMode>>[
         ButtonSegment<UserMode>(
             value: UserMode.farmer,
@@ -36,6 +43,7 @@ class _SingleUserSelectorState extends State<SingleUserSelector> {
           widget.onSelectionChanged(userview == UserMode.farmer);
         });
       },
+
     );
   }
 }

@@ -6,18 +6,23 @@ import 'package:harvest_delivery/common/views/components/farmerCustomerSelector.
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/common/views/pages/signup_page.dart';
 import 'package:harvest_delivery/farmerSide/views/main_page.dart';
-
+import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
+import '../../controller/authFunctions.dart';
+
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
   bool farmerSelected = false;
 
   void updateFarmerSelected(bool value) {
@@ -47,7 +52,6 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // Title
                   Text(
                     "Welcome Back",
                     style: TextStyle(
@@ -56,41 +60,40 @@ class _SignInPageState extends State<SignInPage> {
                       fontSize: 30,
                     ),
                   ),
-                  const SizedBox(height: 30.0),
-                  SingleUserSelector(onSelectionChanged: updateFarmerSelected),
+                  Container(
+                    height: 200.0,
+                    child: Lottie.asset('lib/customerSide/view/images/signinpage_animation.json'),
+                  ),
 
-                  const SizedBox(height: 30.0),
-
+                  const SizedBox(height: 50.0),
                   Form(
-                      child: Column(
-                    children: [
-                      // Email
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'E-mail',
                           ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'E-mail',
                         ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Password
-                      TextFormField(
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: 'Password',
-                          suffixIcon: IconButton(
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
                               icon: Icon(_obscurePassword
                                   ? Icons.visibility_off
                                   : Icons.visibility),
@@ -98,20 +101,20 @@ class _SignInPageState extends State<SignInPage> {
                                 setState(() {
                                   _obscurePassword = !_obscurePassword;
                                 });
-                              }),
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  )),
+                      ],
+                    ),
+                  ),
                   const SizedBox(height: 16),
-
-                  // forgot password
                   Row(
                     children: [
                       Spacer(),
                       GestureDetector(
                         onTap: () {
-                          //TODO: implement forgot password page
+                          // TODO: Implement forgot password page
                           print("Forgot Password");
                         },
                         child: const Text(
@@ -121,41 +124,59 @@ class _SignInPageState extends State<SignInPage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Button
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
-                      onPressed: () {
-                        farmerSelected
-                            ? Get.to(
-                                () => FarmerMainPage(title: "Harvest-Link"))
-                            : Get.to(() => CustomerMainPage());
+                      onPressed: _isLoading
+                          ? null
+                          : () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        try {
+                          farmerSelected
+                              ? await AuthServices.signinFarmer(
+                            emailController.text,
+                            passwordController.text,
+                            context,
+                          )
+                              : await AuthServices.signinCustomer(
+                            emailController.text,
+                            passwordController.text,
+                            context,
+                          );
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.all(16.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0))),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.all(16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                       child: Text(
                         'Sign In',
                         style: TextStyle(
-                            fontSize: 18.0, fontWeight: FontWeight.normal),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
-                  // Text
                   RichText(
-                      text: TextSpan(
-                          text: "Don't have an account? ",
-                          style: TextStyle(
-                            color: Colors.black54,
-                          ),
-                          children: [
+                    text: TextSpan(
+                      text: "Don't have an account? ",
+                      style: TextStyle(
+                        color: Colors.black54,
+                      ),
+                      children: [
                         TextSpan(
                           text: 'Sign Up',
                           style: TextStyle(
@@ -163,11 +184,12 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Navigate to the Sign In screen
                               Get.to(() => SignUpPage());
                             },
                         ),
-                      ])),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

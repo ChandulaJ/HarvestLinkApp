@@ -70,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   SingleUserSelector(onSelectionChanged: updateFarmerSelected),
 
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 50.0),
 
                   Form(
                     key: _formKey,
@@ -181,10 +181,15 @@ class _SignUpPageState extends State<SignUpPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          login
-                              ? AuthServices.signinUser(
-                                  email, password, context)
-                              : AuthServices.signupUser(
+                          // login
+                          //     ? AuthServices.signinUser(
+                          //         email, password, context)
+                          //     : AuthServices.signupUser(
+                          //         email, password, fullname, context);
+                          farmerSelected
+                              ? AuthServices.signupFarmer(
+                                  email, password, fullname, context)
+                              : AuthServices.signupCustomer(
                                   email, password, fullname, context);
                         }
                       },
@@ -227,49 +232,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   const SizedBox(height: 16),
 
-                  // Checkbox with Terms of Service and Privacy Policy
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _agreedToTerms,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _agreedToTerms = value ?? false;
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print("Show Policies");
-                          },
-                          child: RichText(
-                            text: const TextSpan(
-                              text: 'I agree to the ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: 'Terms of Service',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                                TextSpan(text: ' and '),
-                                TextSpan(
-                                  text: 'Privacy Policy',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+
                 ],
               ),
             ),
