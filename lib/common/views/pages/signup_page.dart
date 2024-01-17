@@ -22,12 +22,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String email = '';
   String password = '';
-  String confirmedPassword = '';
   String fullname = '';
   bool login = false;
 
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
   bool _agreedToTerms = false;
 
   @override
@@ -108,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             labelText: 'E-mail',
                           ),
                           validator: (value) {
-                            if (value!.isEmpty || !value.contains('@')) {
+                            if (value!.isEmpty || !value.contains('@')||!value.contains('.')) {
                               return "Please Enter Valid Email";
                             } else {
                               return null;
@@ -160,41 +158,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 16),
 
-                        // Confirm Password
-                        TextFormField(
-                          obscureText: _obscureConfirmPassword,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText: 'Confirm Password',
-                            suffixIcon: IconButton(
-                                icon: Icon(_obscureConfirmPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: () {
-                                  setState(() {
-                                    _obscureConfirmPassword =
-                                        !_obscureConfirmPassword;
-                                  });
-                                }),
-                          ),
-                          // validator: (value) {
-                          //   if (value! == password) {
-                          //     return null;
-                          //   } else {
-                          //     return "Passwords not matching";
-                          //   }
-                          // },
-                          onSaved: (value) {
-                            setState(() {
-                              confirmedPassword = value!;
-                            });
-                          },
-                        ),
+
+
                       ],
                     ),
                   ),
@@ -208,6 +173,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       onPressed: () async {
+
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           login

@@ -1,5 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:harvest_delivery/common/views/pages/signin_page.dart';
+import 'package:harvest_delivery/common/views/pages/signup_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
+import 'package:lottie/lottie.dart';
 
 import 'firebaseFunctions.dart';
 
@@ -8,7 +13,12 @@ class AuthServices {
   static signupUser(
 
       String email, String password, String name, BuildContext context) async {
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: Lottie.asset("lib/customerSide/view/images/loading_animation.json"));
+      },
+    );
     print("In signup user function");
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -19,6 +29,9 @@ class AuthServices {
       await FirestoreServices.saveUser(name, email, userCredential.user!.uid);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Registration Successful')));
+      //TODO: add check to go to farmer signin too
+      Navigator.of(context).pop();
+      Get.to(CustomerMainPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -27,13 +40,25 @@ class AuthServices {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Email Provided already Exists')));
       }
+      Navigator.of(context).pop();
+      Get.to(SignUpPage());
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
+      Navigator.of(context).pop();
+      Get.to(SignUpPage());
     }
+
   }
 
   static signinUser(String email, String password, BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: Lottie.asset("lib/customerSide/view/images/loading_animation.json"));
+
+      },
+    );
     print("In signin user function");
     try {
       await FirebaseAuth.instance
@@ -41,6 +66,9 @@ class AuthServices {
 
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('You are Logged in')));
+      //TODO: add check to go to farmer signin too
+      Navigator.of(context).pop();
+      Get.to(CustomerMainPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -48,7 +76,11 @@ class AuthServices {
       } else if (e.code == 'wrong-password') {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Password did not match')));
+
       }
+      Navigator.of(context).pop();
+      Get.to(SignInPage());
     }
+
   }
 }
