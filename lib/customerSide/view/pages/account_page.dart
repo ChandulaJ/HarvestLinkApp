@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 import '../components/account_page_tile.dart';
 
 class AccountPage extends StatelessWidget {
@@ -21,7 +20,7 @@ class AccountPage extends StatelessWidget {
             height: 20.0,
           ),
           Text(
-            "Your name here",
+            "James Anderson",
             style: GoogleFonts.cairo(fontSize: 25.0),
           ),
           const SizedBox(

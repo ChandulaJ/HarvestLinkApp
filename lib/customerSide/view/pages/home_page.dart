@@ -18,13 +18,14 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     homePageController.setContext(context);
     homePageController.fetchMarketData();
   }
+
   @override
   Widget build(BuildContext context) {
     homePageController.setContext(context);
     return Obx(() {
       String searchValue = homePageController.searchValue.toString();
       List<ProductDataModel> filteredProducts =
-      homePageController.getFilteredProducts(searchValue);
+          homePageController.getFilteredProducts(searchValue);
 
       return ListView.builder(
         itemCount: filteredProducts.length,

@@ -15,9 +15,9 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Obx(() {
-          List<ProductDataModel> cartItems = cartController.cartItems;
+          
 
-          return cartItems.isEmpty ? EmptyCart() : FilledCart();
+          return cartController.cartItems.isEmpty ? EmptyCart() : FilledCart();
         }),
       ),
     );
