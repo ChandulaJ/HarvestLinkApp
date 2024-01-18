@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:harvest_delivery/farmerSide/views/home_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/item_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/order_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/settings_screen.dart';
 
+import 'home_screen.dart';
+import 'item_screen.dart';
+import 'order_screen.dart';
+import 'settings_screen.dart';
 
 class FarmerMainPage extends StatefulWidget {
-  const FarmerMainPage({Key? key, required this.title}) : super(key: key);
+  const FarmerMainPage({Key? key}) : super(key: key);
 
-  final String title;
 
   @override
   State<FarmerMainPage> createState() => _MyHomePageState();
@@ -34,9 +33,10 @@ class _MyHomePageState extends State<FarmerMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+
       ),
       body: Center(
         child: _widgetOptions
@@ -49,8 +49,8 @@ class _MyHomePageState extends State<FarmerMainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Menu',
+            icon: Icon(Icons.border_all_outlined),
+            label: 'Item',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket),

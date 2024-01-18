@@ -4,19 +4,19 @@ import '../../controller/home_page_controller.dart';
 import '../../models/product_data_model.dart';
 import '../components/homepage_tile.dart';
 
-class HomePage extends StatefulWidget {
+class CustomerHomePage extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CustomerHomePage> createState() => _CustomerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
   final HomePageController homePageController = Get.find();
 
   @override
   void initState() {
     super.initState();
     homePageController.setContext(context);
-    homePageController.fetchData(); 
+    homePageController.fetchMarketData();
   }
   @override
   Widget build(BuildContext context) {

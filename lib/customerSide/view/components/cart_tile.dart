@@ -4,12 +4,14 @@ class CartTile extends StatelessWidget {
   final String img;
   final String productName;
   final double price;
+  final double quantity;
 
   const CartTile({
     Key? key,
     required this.img,
     required this.productName,
     required this.price,
+    required this.quantity,
   }) : super(key: key);
 
   @override
@@ -34,10 +36,15 @@ class CartTile extends StatelessWidget {
                   width: 120.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(img),
-                    ),
+                      image: img.isNotEmpty
+                          ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(img),
+                      )
+                          : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('lib/customerSide/view/images/default_product_img.jpg'),
+                      ),
                   ),
                 ),
               ),
@@ -63,7 +70,7 @@ class CartTile extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          'Rs. ' + price.toString(),
+                          'Rs.  ${(price * quantity).toString()}',
                           style: TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,

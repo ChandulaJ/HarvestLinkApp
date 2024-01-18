@@ -12,11 +12,12 @@ class HomePageTile extends StatelessWidget {
   final double price;
   final int product_index;
 
-   HomePageTile({
+  HomePageTile({
     super.key,
     required this.img,
     required this.productName,
-    required this.price, required this.product_index,
+    required this.price,
+    required this.product_index,
   });
 
   @override
@@ -35,8 +36,17 @@ class HomePageTile extends StatelessWidget {
             width: double.maxFinite,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-                image:
-                    DecorationImage(fit: BoxFit.cover, image: AssetImage(img))),
+              image: img.isNotEmpty
+                  ? DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(img),
+                    )
+                  : DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                          'lib/customerSide/view/images/default_product_img.jpg'),
+                    ), // Replace with your dummy image asset path
+            ),
           ),
           const SizedBox(
             height: 20.0,
@@ -55,10 +65,19 @@ class HomePageTile extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {  Get.to(MoreDetailsPage(itemIndex: product_index, product: homePageController.marketItems[product_index]));
-                    ;},
-                     // onPressed: () {homePageController.cartAddBtnPressed(product_index);},
-                      icon: Icon(Icons.add_circle,size: 40,),),
+                    onPressed: () {
+                      Get.to(MoreDetailsPage(
+                          itemIndex: product_index,
+                          product:
+                              homePageController.marketItems[product_index]));
+                      ;
+                    },
+                    // onPressed: () {homePageController.cartAddBtnPressed(product_index);},
+                    icon: Icon(
+                      Icons.add_circle,
+                      size: 40,
+                    ),
+                  ),
                 ],
               )
             ],

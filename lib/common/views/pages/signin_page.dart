@@ -34,7 +34,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -61,11 +61,10 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   Container(
-                    height: 200.0,
+                    height: 250.0,
                     child: Lottie.asset('lib/customerSide/view/images/signinpage_animation.json'),
                   ),
 
-                  const SizedBox(height: 50.0),
                   Form(
                     child: Column(
                       children: [

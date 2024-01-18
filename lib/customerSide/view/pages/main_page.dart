@@ -44,7 +44,7 @@ class _CustomerMainPageState extends State<CustomerMainPage> {
         }),
       ),
       body: Obx(() => controller.selectedTabIndex.value == 0
-          ? HomePage()
+          ? CustomerHomePage()
           : controller.selectedTabIndex.value == 1
           ? CartPage()
           : AccountPage()),

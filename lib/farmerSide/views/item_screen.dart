@@ -1,18 +1,10 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Item {
-  String name;
-  String description;
-  double price;
-  int amount;
+import 'add_item.dart';
+import 'update_item.dart';
 
-  Item({
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.amount,
-  });
-}
 
 class ItemScreen extends StatefulWidget {
   const ItemScreen({Key? key}) : super(key: key);
@@ -22,179 +14,136 @@ class ItemScreen extends StatefulWidget {
 }
 
 class _ItemScreenState extends State<ItemScreen> {
-  List<Item> menuItems = [
-    Item(name: 'Carrot', description: 'Carrot', price: 200, amount: 10),
-    Item(name: 'Pumpkin', description: 'Pumpkin', price: 300, amount: 15),
-  ];
+  final Stream<QuerySnapshot> itemsStream =
+      FirebaseFirestore.instance.collection('MarketProducts').snapshots();
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _priceController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  Future<void> deleteItem(String id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('MarketProducts')
+          .doc(id)
+          .delete();
+    } catch (error) {
+      print('Failed to delete item: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete item')),
+      );
+    }
+  }
+
+  Future<String> getImageURL(String imagePath) async {
+    final imageRef = FirebaseStorage.instance.ref().child(imagePath);
+    return await imageRef.getDownloadURL();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Items'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _showAddDialog();
-            },
+        title: const Text(
+          'Items',
+          style: TextStyle(
+            fontSize: 28, 
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
       ),
-      body: ListView.builder(
-        itemCount: menuItems.length,
-        itemBuilder: (context, index) {
-          final menuItem = menuItems[index];
-          return ListTile(
-            title: Text(menuItem.name),
-            subtitle: Text(menuItem.description),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    _showEditDialog(menuItem, index);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    _deleteItem(index);
-                  },
-                ),
-              ],
-            ),
+      body: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: itemsStream,
+          builder: (context, snapshot) {
+            try {
+              if (snapshot.hasError) {
+                return Center(child: Text('Something went wrong'));
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final List storedocs = snapshot.data!.docs
+                  .map((doc) => {
+                        'id': doc.id,
+                        ...doc.data() as Map<String, dynamic>,
+                      })
+                  .toList();
+
+              return ListView.builder(
+                itemCount: storedocs.length,
+                itemBuilder: (context, index) {
+                  final itemData = storedocs[index];
+
+                  return Column(
+                    children: [
+                      ListTile(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                        leading: FutureBuilder<String>(
+                          future: itemData['ImageUrl'] != null
+                              ? getImageURL(itemData['ImageUrl'])
+                              : null,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            return CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(itemData['ImageUrl'] ?? ''),
+                            );
+                          },
+                        ),
+                        title: Text(
+                          itemData['Name'] ?? '',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdateItem(id: itemData['id']),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              color: const Color.fromARGB(255, 157, 27, 18),
+                              onPressed: () => deleteItem(itemData['id']),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(height: 0),
+                    ],
+                  );
+                },
+              );
+            } catch (e) {
+              print('Error in FutureBuilder: $e');
+              return Center(child: Text('Something went wrong'));
+            }
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddItem()),
           );
         },
+        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+        foregroundColor: Colors.white,
+        child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
-  }
-
-  void _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Add Food Item'),
-          content: _buildForm(),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _addItem();
-                Navigator.pop(context);
-              },
-              child: Text('Add'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showEditDialog(Item menuItem, int index) {
-    _nameController.text = menuItem.name;
-    _descriptionController.text = menuItem.description;
-    _priceController.text = menuItem.price.toString();
-    _amountController.text = menuItem.amount.toString();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Edit Food Item'),
-          content: _buildForm(),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _editItem(index);
-                Navigator.pop(context);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildForm() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextField(
-          controller: _nameController,
-          decoration: InputDecoration(labelText: 'Name'),
-        ),
-        TextField(
-          controller: _descriptionController,
-          decoration: InputDecoration(labelText: 'Description'),
-        ),
-        TextField(
-          controller: _priceController,
-          keyboardType: TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(labelText: 'Price'),
-        ),
-        TextField(
-          controller: _amountController,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(labelText: 'Amount'),
-        ),
-      ],
-    );
-  }
-
-  void _addItem() {
-    setState(() {
-      menuItems.add(Item(
-        name: _nameController.text,
-        description: _descriptionController.text,
-        price: double.parse(_priceController.text),
-        amount: int.parse(_amountController.text),
-      ));
-      _clearControllers();
-    });
-  }
-
-  void _editItem(int index) {
-    setState(() {
-      menuItems[index] = Item(
-        name: _nameController.text,
-        description: _descriptionController.text,
-        price: double.parse(_priceController.text),
-        amount: int.parse(_amountController.text),
-      );
-      _clearControllers();
-    });
-  }
-
-  void _deleteItem(int index) {
-    setState(() {
-      menuItems.removeAt(index);
-    });
-  }
-
-  void _clearControllers() {
-    _nameController.clear();
-    _descriptionController.clear();
-    _priceController.clear();
-    _amountController.clear();
   }
 }

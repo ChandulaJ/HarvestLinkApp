@@ -3,11 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:harvest_delivery/customerSide/view/components/product_counter.dart';
+import 'package:harvest_delivery/customerSide/view/pages/cart_page.dart';
+import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 
+import '../../controller/home_page_controller.dart';
 import '../../models/product_data_model.dart';
 import 'checkout_page.dart';
 
 class MoreDetailsPage extends StatefulWidget {
+
   final int itemIndex;
   final ProductDataModel product;
 
@@ -19,6 +23,8 @@ class MoreDetailsPage extends StatefulWidget {
 }
 
 class _MoreDetailsPageState extends State<MoreDetailsPage> {
+
+  final HomePageController homePageController = Get.find();
   var buycount = 0;
 
   void updateBuyCount(int count) {
@@ -57,10 +63,15 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
                     height: 250.0,
                     width: double.maxFinite,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(widget.product.imageUrl),
-                      ),
+                        image: widget.product.imageUrl.isNotEmpty
+                            ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage( widget.product.imageUrl),
+                        )
+                            : DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('lib/customerSide/view/images/default_product_img.jpg'),
+                        ),
                     ),
                   ),
                   Padding(
@@ -99,7 +110,8 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
               alignment: Alignment.bottomCenter,
               child: FilledButton(
                 onPressed: () {
-                  Get.to(CheckoutPage());
+                  homePageController.cartAddBtnPressed(widget.itemIndex,buycount.toDouble());
+                  Get.to(CustomerMainPage());
                 },
                 child: Text(
                   'Add $buycount to cart - LKR ${buycount * widget.product.price}',
