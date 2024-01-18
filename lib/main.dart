@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
 import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
@@ -24,6 +25,7 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
+  static const Color primaryColor = Color.fromARGB(255, 243, 159, 33);
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -34,9 +36,15 @@ class MyApp extends StatelessWidget {
 
       title: 'Harvest Link',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
+        textTheme: GoogleFonts.robotoTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
+      routes: {
+        '/signin': (context) => SignInPage(),
+      },
       //home: const MainPage(title: 'Harvest Link'),
       home: SignInPage(),
       //home:OrderPlacedPage(),
