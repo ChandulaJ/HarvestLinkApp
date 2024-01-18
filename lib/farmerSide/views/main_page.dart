@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:harvest_delivery/farmerSide/views/home_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/item_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/order_screen.dart';
-import 'package:harvest_delivery/farmerSide/views/settings_screen.dart';
+import 'package:harvest_delivery/views/home_screen.dart';
+import 'package:harvest_delivery/views/item_screen.dart';
+import 'package:harvest_delivery/views/order_screen.dart';
+import 'package:harvest_delivery/views/settings_screen.dart';
 
-
-class FarmerMainPage extends StatefulWidget {
-  const FarmerMainPage({Key? key, required this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<FarmerMainPage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<FarmerMainPage> {
+class _MyHomePageState extends State<MainPage> {
   int _selectedIndex =
       0; // Index of the currently selected bottom navigation item
 
@@ -34,9 +33,10 @@ class _MyHomePageState extends State<FarmerMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+        //title: Text(widget.title),
       ),
       body: Center(
         child: _widgetOptions
@@ -49,8 +49,8 @@ class _MyHomePageState extends State<FarmerMainPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu),
-            label: 'Menu',
+            icon: Icon(Icons.border_all_outlined),
+            label: 'Item',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket),

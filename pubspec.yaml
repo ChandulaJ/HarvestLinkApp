@@ -39,9 +39,13 @@ dependencies:
   cloud_firestore: ^4.13.6
   firebase_core: ^2.24.2
   google_fonts: ^6.1.0
+  firebase_storage: ^11.0.4
   easy_search_bar: ^2.5.0
   get: ^4.6.6
+  intl: ^0.17.0
+  firebase_app_check: ^0.2.1+8
   sign_in_button: ^3.2.0
+  image: ^3.0.1
   group_button: ^5.3.4
   flutter_svg_provider: ^1.0.7
   lottie: ^3.0.0
