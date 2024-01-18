@@ -42,10 +42,10 @@ class ProductDataModel {
     return ProductDataModel(
       id: map['id'] ?? '',
       name: map['Name'] ?? '',
-      price: map['Price'] ?? 0.0,
+      price: (map['Price'] ?? 0).toDouble(),
       imageUrl: map['Image'] ?? '',
       unit: map['Unit'] ?? '',
-      quantity: map['Quantity']?? 0.0,
+      quantity: (map['Quantity'] ?? 0).toDouble(),
       userId: map['UserId'] ?? '',
     );
   }
