@@ -9,6 +9,7 @@ import 'package:image/image.dart' as img;
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/harvest.dart';
+
 class UpdateItem extends StatefulWidget {
   final String id;
 
@@ -24,8 +25,8 @@ class _UpdateItemState extends State<UpdateItem> {
 
   final _picker = ImagePicker();
   late File _image = File('');
-  // Updating Item
-  CollectionReference items = FirebaseFirestore.instance.collection('MarketProducts');
+  CollectionReference items =
+      FirebaseFirestore.instance.collection('MarketProducts');
 
   bool isValidImage(File file) {
     try {
@@ -37,25 +38,20 @@ class _UpdateItemState extends State<UpdateItem> {
     }
   }
 
-  Future<void> updateItem(Harvest harvest) async{
+  Future<void> updateItem(Harvest harvest) async {
     String imageUrl = '';
 
-     if (_image.path.isNotEmpty && isValidImage(_image)) {
-      // Generate a unique image name using current date and time
+    if (_image.path.isNotEmpty && isValidImage(_image)) {
       String imageName = DateTime.now().toString() + '.jpg';
 
-      // Upload the new image to Firebase Storage with the generated name
       Reference storageReference =
-      FirebaseStorage.instance.ref().child('item_images').child(imageName);
+          FirebaseStorage.instance.ref().child('item_images').child(imageName);
       UploadTask uploadTask = storageReference.putFile(_image);
 
-      // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        // Get the download URL after the upload is complete
         imageUrl = await storageReference.getDownloadURL();
         harvest.image = imageUrl;
 
-        // Update the item in Firestore with the new image URL
         await items
             .doc(widget.id)
             .update({
@@ -85,7 +81,7 @@ class _UpdateItemState extends State<UpdateItem> {
           .then((value) => print("Item Updated"))
           .catchError((error) => print("Failed to update item: $error"));
     }
-  
+
     return items
         .doc(widget.id)
         .update({
@@ -117,9 +113,12 @@ class _UpdateItemState extends State<UpdateItem> {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Update Item", style: TextStyle(
+        title: Text(
+          "Update Item",
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-          ),),
+          ),
+        ),
         backgroundColor: MyApp.primaryColor,
       ),
       body: SingleChildScrollView(
@@ -160,7 +159,6 @@ class _UpdateItemState extends State<UpdateItem> {
                 // Handle the case when 'HarvestedDate' is null
                 // You can assign a default value or perform some other logic
               }
-              //final harvestedDate = DateFormat('K:mm:ss').format(dateTime);
 
               Harvest harvest = Harvest(
                 produceId: widget.id,
@@ -169,7 +167,7 @@ class _UpdateItemState extends State<UpdateItem> {
                 quantity: data['StockQuantity'],
                 unit: data['Unit'],
                 harvestedDate: harvestedDate ?? DateTime.now(),
-                image: '', 
+                image: '',
                 farmerId: FirebaseAuth.instance.currentUser!.uid,
               );
 
@@ -178,7 +176,7 @@ class _UpdateItemState extends State<UpdateItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                     Container(
+                    Container(
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
@@ -190,7 +188,7 @@ class _UpdateItemState extends State<UpdateItem> {
                         ),
                       ),
                     ),
-                     ElevatedButton(
+                    ElevatedButton(
                       onPressed: pickImage,
                       child: Text('Change Image'),
                     ),
@@ -263,8 +261,6 @@ class _UpdateItemState extends State<UpdateItem> {
                       ),
                     ),
                     SizedBox(height: 12),
-                    
-                    // DatePicker for Harvested Date
                     TextFormField(
                       readOnly: true,
                       controller: pickedDateTextController,

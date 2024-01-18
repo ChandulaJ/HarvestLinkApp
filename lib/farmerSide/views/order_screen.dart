@@ -30,6 +30,7 @@ class OrderScreen extends StatelessWidget {
               Tab(text: 'Delivered'),
             ],
           ),
+          automaticallyImplyLeading: false,
         ),
         body: TabBarView(
           children: [

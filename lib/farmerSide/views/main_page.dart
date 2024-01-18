@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:harvest_delivery/farmerSide/views/account_screen.dart';
 import 'package:harvest_delivery/main.dart';
 
-import 'home_screen.dart';
 import 'item_screen.dart';
 import 'order_screen.dart';
-import 'settings_screen.dart';
 
 class FarmerMainPage extends StatefulWidget {
   const FarmerMainPage({Key? key}) : super(key: key);
@@ -16,13 +15,12 @@ class FarmerMainPage extends StatefulWidget {
 
 class _MyHomePageState extends State<FarmerMainPage> {
   int _selectedIndex =
-      0; // Index of the currently selected bottom navigation item
+      0; 
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
     ItemScreen(),
-    OrderScreen(), // Assuming this is the fourth screen
-    SettingsScreen(),
+    OrderScreen(),
+    AccountScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -37,29 +35,25 @@ class _MyHomePageState extends State<FarmerMainPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: MyApp.primaryColor,
-
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: _widgetOptions
-            .elementAt(_selectedIndex), // Display the selected screen
+            .elementAt(_selectedIndex), 
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.border_all_outlined),
-            label: 'Item',
+            label: 'Items',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_basket),
-            label: 'Order',
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.account_circle),  
+            label: 'Account', 
           ),
         ],
         currentIndex: _selectedIndex,

@@ -1,20 +1,16 @@
-import 'system_user.dart';
-
-class Customer extends SystemUser {
+class Customer {
   String customerId;
   String name;
   String phoneNumber;
   String address;
+  String email;
 
   Customer(
-      {required String userId,
-      required String password,
-      required bool loginStatus,
-      required this.customerId,
+      {required this.customerId,
       required this.name,
       required this.phoneNumber,
-      required this.address})
-      : super(userId: userId, password: password, loginStatus: loginStatus);
+      required this.address,
+      required this.email});
 
   void viewOrderHistory() {}
 }

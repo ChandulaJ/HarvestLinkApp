@@ -39,7 +39,6 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String selectedStatus = 'Pending';
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -135,7 +134,6 @@ class OrderDetailsScreen extends StatelessWidget {
                       rows: items.map<DataRow>((item) {
                         String productId = item['ProductId'] as String;
 
-                        // Fetch product details from MarketProducts collection
                         Future<Map<String, dynamic>> getProductDetails() async {
                           try {
                             DocumentSnapshot productSnapshot = await FirebaseFirestore.instance

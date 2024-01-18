@@ -73,6 +73,7 @@ Future<void> deleteItem(String id) async {
             fontWeight: FontWeight.bold,
           ),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         padding: const EdgeInsets.all(8.0),

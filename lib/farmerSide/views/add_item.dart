@@ -72,7 +72,7 @@ class _AddItemState extends State<AddItem> {
       quantity: int.parse(quantityController.text),
       unit: unitController.text,
       harvestedDate: harvestedDate ??
-      DateTime.now(), // Use current date if harvestedDate is null
+      DateTime.now(), 
       image: imageUrl,
       farmerId: FirebaseAuth.instance.currentUser!.uid, 
     );
@@ -81,7 +81,6 @@ class _AddItemState extends State<AddItem> {
     await FirebaseFirestore.instance
         .collection('MarketProducts')
         .add({
-          //'ProduceId': harvest.produceId,
           'Name': harvest.name,
           'Price': harvest.price,
           'StockQuantity': harvest.quantity,
@@ -260,10 +259,7 @@ class _AddItemState extends State<AddItem> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           addItem();
-                          //clearText();
                           Navigator.pop(context);
-                          //Navigator.of(context).popUntil((route) => route.isFirst);
-                          //Navigator.of(context).pushNamedAndRemoveUntil('/item-tab-route', (route) => false);
                         }
                       },
                       child: Text(
@@ -280,7 +276,7 @@ class _AddItemState extends State<AddItem> {
                       ),
                     ),
                     SizedBox(
-                        height: 12.0), // Adjust the spacing between buttons
+                        height: 12.0),
                     ElevatedButton(
                       key: globalKey,
                       onPressed: clearText,
