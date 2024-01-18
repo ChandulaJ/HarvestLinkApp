@@ -27,18 +27,19 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       homePageController.getFilteredProducts(searchValue);
 
       return ListView.builder(
-        itemCount: filteredProducts.length,
-        itemBuilder: (context, index) {
-          ProductDataModel product = filteredProducts[index];
+  itemCount: filteredProducts.length,
+  itemBuilder: (context, index) {
+    ProductDataModel product = filteredProducts[index];
 
-          return HomePageTile(
-            img: product.imageUrl,
-            productName: product.name,
-            price: product.price,
-            product_index: index,
-          );
-        },
-      );
+    return HomePageTile(
+      img: product.imageUrl,
+      productName: product.name,
+      price: product.price,
+      product_index: index,
+    );
+  },
+);
+
     });
   }
 }

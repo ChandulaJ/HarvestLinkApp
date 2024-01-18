@@ -7,7 +7,6 @@ import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
 
-
 import 'common/views/pages/signin_page.dart';
 import 'farmerSide/views/main_page.dart';
 
@@ -25,8 +24,7 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-  static const Color primaryColor = Color.fromARGB(255, 243, 159, 33);
+  static const Color primaryColor = Colors.blue;
 
   const MyApp({Key? key}) : super(key: key);
 
@@ -41,7 +39,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
         textTheme: GoogleFonts.robotoTextTheme(
-
           Theme.of(context).textTheme,
         ),
       ),
@@ -54,9 +51,7 @@ class MyApp extends StatelessWidget {
       //home:OrderPlacedPage(),
 //home: CustomerMainPage(),
 
-
-   // home:FarmerMainPage(),
-
+      // home:FarmerMainPage(),
     );
   }
 }

@@ -4,8 +4,8 @@ class ProductDataModel {
   final double price;
   final String imageUrl;
   final String unit;
-   final double quantity;
-   final String userId;
+  final double quantity;
+  final String userId;
 
   ProductDataModel({
     required this.id,
@@ -27,26 +27,25 @@ class ProductDataModel {
     String? userId,
   }) {
     return ProductDataModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      price: price ?? this.price,
-      imageUrl: imageUrl ?? this.imageUrl,
-      unit: unit ?? this.unit,
-      quantity: quantity ?? this.quantity,
-      userId: userId ?? this.userId
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        price: price ?? this.price,
+        imageUrl: imageUrl ?? this.imageUrl,
+        unit: unit ?? this.unit,
+        quantity: quantity ?? this.quantity,
+        userId: userId ?? this.userId);
   }
 
   factory ProductDataModel.fromMap(Map<String, dynamic> map) {
     print("inside product data model");
     return ProductDataModel(
       id: map['id'] ?? '',
-      name: map['Name'] ?? '',
-      price: (map['Price'] ?? 0).toDouble(),
-      imageUrl: map['Image'] ?? '',
-      unit: map['Unit'] ?? '',
-      quantity: (map['Quantity'] ?? 0).toDouble(),
-      userId: map['UserId'] ?? '',
+      name: map['name'] ?? '',
+      price: (map['price'] ?? 0).toDouble(),
+      imageUrl: map['imageUrl'] ?? '',
+      unit: map['unit'] ?? '',
+      quantity: (map['quantity'] ?? 0).toDouble(),
+      userId: map['userId'] ?? '',
     );
   }
   Map<String, dynamic> toJson() {
@@ -54,10 +53,10 @@ class ProductDataModel {
       'id': id,
       'name': name,
       'price': price,
-      'imageUrl':imageUrl,
-      'unit':unit,
-      'quantity':quantity,
-      'userId':userId,
+      'imageUrl': imageUrl,
+      'unit': unit,
+      'quantity': quantity,
+      'userId': userId,
     };
   }
 }

@@ -16,7 +16,6 @@ class _FilledCartState extends State<FilledCart> {
   @override
   void initState() {
     super.initState();
-    cartPageController.fetchCartData();
   }
 
   @override
@@ -32,13 +31,11 @@ class _FilledCartState extends State<FilledCart> {
           textAlign: TextAlign.left,
         ),
         Obx(() {
-          List<ProductDataModel> cartItems = cartPageController.cartItems;
-
           return Expanded(
             child: ListView.builder(
-              itemCount: cartItems.length,
+              itemCount: cartPageController.cartItems.length,
               itemBuilder: (context, index) {
-                ProductDataModel product = cartItems[index];
+                ProductDataModel product = cartPageController.cartItems[index];
 
                 return Padding(
                   padding: const EdgeInsets.only(top: 10.0),

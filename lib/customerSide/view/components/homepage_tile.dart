@@ -13,12 +13,13 @@ class HomePageTile extends StatelessWidget {
   final int product_index;
 
   HomePageTile({
-    super.key,
-    required this.img,
-    required this.productName,
-    required this.price,
-    required this.product_index,
-  });
+  Key? key,
+  required this.img,
+  required this.productName,
+  required this.price,
+  required this.product_index,
+}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

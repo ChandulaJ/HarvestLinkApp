@@ -8,7 +8,8 @@ import 'cart_page_controller.dart';
 import '../models/product_data_model.dart';
 
 class HomePageController extends GetxController {
-    final MarketProductsRepository _market_repository = MarketProductsRepository();
+  final MarketProductsRepository _market_repository =
+      MarketProductsRepository();
 
   late BuildContext context;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -20,32 +21,29 @@ class HomePageController extends GetxController {
 
   final RxList<ProductDataModel> marketItems = <ProductDataModel>[].obs;
 
-
   final RxInt selectedTabIndex = 0.obs;
   final RxString searchValue = ''.obs;
 
-    Future<void> fetchMarketData() async {
-      try {
-        print("fetching market data");
-        List<ProductDataModel> fetchedItems =
-        await _market_repository.fetchMarketItems();
-        marketItems.assignAll(fetchedItems);
-      } catch (e) {
-        print("Error fetching market items: $e");
-      }
+  Future<void> fetchMarketData() async {
+    try {
+      print("fetching market data");
+      List<ProductDataModel> fetchedItems =
+          await _market_repository.fetchMarketItems();
+      marketItems.assignAll(fetchedItems);
+    } catch (e) {
+      print("Error fetching market items: $e");
     }
+  }
 
+  void cartAddBtnPressed(int index, double qty) {
+    ProductDataModel productToAdd = marketItems[index];
 
-    void cartAddBtnPressed(int index, double qty) {
+    // productToAdd = productToAdd.copyWith(quantity: qty);
+    // cartController.cartItems.add(productToAdd);
+    cartController.addToCart(productToAdd);
 
-      ProductDataModel productToAdd = marketItems[index];
-      productToAdd = productToAdd.copyWith(quantity: qty);
-      cartController.cartItems.add(productToAdd);
-
-      showSnackBar();
-    }
-
-
+    showSnackBar();
+  }
 
   List<String> getMarketItemNames() {
     return marketItems.map((item) => item.name).toList();
@@ -86,7 +84,6 @@ class HomePageController extends GetxController {
   void showSnackBar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-
         content: const Text('Item added to the cart!'),
         action: SnackBarAction(
           label: 'View Cart',
