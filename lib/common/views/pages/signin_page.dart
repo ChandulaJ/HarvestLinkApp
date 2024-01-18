@@ -61,9 +61,9 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   Container(
                     height: 250.0,
-                    child: Lottie.asset(
-                        'lib/customerSide/view/images/signinpage_animation.json'),
+                    child: Lottie.asset('lib/customerSide/view/images/signinpage_animation.json'),
                   ),
+
                   Form(
                     child: Column(
                       children: [
@@ -128,28 +128,28 @@ class _SignInPageState extends State<SignInPage> {
                       onPressed: _isLoading
                           ? null
                           : () async {
-                              setState(() {
-                                _isLoading = true;
-                              });
+                        setState(() {
+                          _isLoading = true;
+                        });
 
-                              try {
-                                farmerSelected
-                                    ? await AuthServices.signinFarmer(
-                                        emailController.text,
-                                        passwordController.text,
-                                        context,
-                                      )
-                                    : await AuthServices.signinCustomer(
-                                        emailController.text,
-                                        passwordController.text,
-                                        context,
-                                      );
-                              } finally {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                              }
-                            },
+                        try {
+                          farmerSelected
+                              ? await AuthServices.signinFarmer(
+                            emailController.text,
+                            passwordController.text,
+                            context,
+                          )
+                              : await AuthServices.signinCustomer(
+                            emailController.text,
+                            passwordController.text,
+                            context,
+                          );
+                        } finally {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,

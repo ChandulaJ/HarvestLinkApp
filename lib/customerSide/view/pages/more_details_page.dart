@@ -7,10 +7,11 @@ import 'package:harvest_delivery/customerSide/view/pages/cart_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 
 import '../../controller/home_page_controller.dart';
-import '../../models/cart_product.dart';
 import '../../models/product_data_model.dart';
+import 'checkout_page.dart';
 
 class MoreDetailsPage extends StatefulWidget {
+
   final int itemIndex;
   final ProductDataModel product;
 
@@ -22,28 +23,14 @@ class MoreDetailsPage extends StatefulWidget {
 }
 
 class _MoreDetailsPageState extends State<MoreDetailsPage> {
+
   final HomePageController homePageController = Get.find();
-  var buyCount = 0;
+  var buycount = 0;
 
   void updateBuyCount(int count) {
     setState(() {
-      buyCount = count;
+      buycount = count;
     });
-  }
-
-  Future<void> addToCart() async {
-
-    CartProduct cartProduct = CartProduct(
-      productId: widget.product.productId,
-      name: widget.product.name,
-      price: widget.product.price,
-      quantity: buyCount,
-
-    );
-
-    await homePageController.addToCart(cartProduct);
-
-    Get.to(CartPage());
   }
 
   @override
@@ -76,15 +63,15 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
                     height: 250.0,
                     width: double.maxFinite,
                     decoration: BoxDecoration(
-                      image: widget.product.imageUrl.isNotEmpty
-                          ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage( widget.product.imageUrl),
-                      )
-                          : DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('lib/customerSide/view/images/default_product_img.jpg'),
-                      ),
+                        image: widget.product.imageUrl.isNotEmpty
+                            ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage( widget.product.imageUrl),
+                        )
+                            : DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('lib/customerSide/view/images/default_product_img.jpg'),
+                        ),
                     ),
                   ),
                   Padding(
@@ -121,12 +108,13 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
             padding: const EdgeInsets.all(20.0),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
+              child: FilledButton(
                 onPressed: () {
-                  addToCart();
+                  homePageController.cartAddBtnPressed(widget.itemIndex,buycount.toDouble());
+                  Get.to(CustomerMainPage());
                 },
                 child: Text(
-                  'Add $buyCount to cart - LKR ${buyCount * widget.product.price}',
+                  'Add $buycount to cart - LKR ${buycount * widget.product.price}',
                   style: TextStyle(fontSize: 18.0),
                 ),
                 style: ButtonStyle(
@@ -135,7 +123,8 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Adjust the radius here
                     ),
                   ),
                 ),
