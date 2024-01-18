@@ -41,18 +41,21 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
         textTheme: GoogleFonts.robotoTextTheme(
-        Theme.of(context).textTheme, 
+
+          Theme.of(context).textTheme,
         ),
       ),
       routes: {
-        '/signin': (context) => SignInPage(), 
+        '/signin': (context) => SignInPage(),
       },
-      
+
       //home: const MainPage(title: 'Harvest Link'),
       home: SignInPage(),
       //home:OrderPlacedPage(),
 //home: CustomerMainPage(),
-   //home:FarmerMainPage(),
+
+
+   // home:FarmerMainPage(),
 
     );
   }
