@@ -24,6 +24,9 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
+
+  static const Color primaryColor = Color.fromARGB(255, 31, 121, 44);
+
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -34,14 +37,14 @@ class MyApp extends StatelessWidget {
 
       title: 'Harvest Link',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
         useMaterial3: true,
       ),
       //home: const MainPage(title: 'Harvest Link'),
-     // home: SignInPage(),
+      home: SignInPage(),
       //home:OrderPlacedPage(),
 //home: CustomerMainPage(),
-    home:FarmerMainPage(),
+   //home:FarmerMainPage(),
 
     );
   }

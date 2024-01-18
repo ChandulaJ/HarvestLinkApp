@@ -8,7 +8,7 @@ class Harvest {
   String unit;
   DateTime harvestedDate;
   String image;
-  //Farmer farmer;
+  String farmerId;
 
   Harvest({
     required this.produceId,
@@ -18,7 +18,7 @@ class Harvest {
     required this.unit,
     required this.harvestedDate,
     required this.image,
-   // required this.farmer,
+    required this.farmerId,
   });
 
   void inStock() {}

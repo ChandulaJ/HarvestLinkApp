@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:harvest_delivery/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart'; // Added for date formatting
 import 'package:image/image.dart' as img;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/harvest.dart';
 
@@ -71,18 +72,11 @@ class _AddItemState extends State<AddItem> {
       quantity: int.parse(quantityController.text),
       unit: unitController.text,
       harvestedDate: harvestedDate ??
-          DateTime.now(), // Use current date if harvestedDate is null
+      DateTime.now(), // Use current date if harvestedDate is null
       image: imageUrl,
-      //farmer: Farmer(), // You may need to provide appropriate data for the farmer
+      farmerId: FirebaseAuth.instance.currentUser!.uid, 
     );
-    // Create a map to store the item data
-    // Map<String, dynamic> data = {
-    //   'Name': nameController.text,
-    //   'Price': priceController.text,
-    //   'Quantity': quantityController.text,
-    //   'ImageUrl': imageUrl,
-    //   'HarvestedDate': harvestedDate, // Add the date as a Firebase server timestamp
-    // };
+    
 
     await FirebaseFirestore.instance
         .collection('MarketProducts')
@@ -94,9 +88,7 @@ class _AddItemState extends State<AddItem> {
           'Unit': harvest.unit,
           'HarvestedDate': harvest.harvestedDate,
           'ImageUrl': harvest.image,
-          'Farmer': {
-            // Add the farmer details here based on your Farmer class structure
-          },
+          'FarmerId': harvest.farmerId, 
         })
         .then((value) => print('Item Added'))
         .catchError((error) => print('Failed to Add item: $error'));
@@ -123,7 +115,7 @@ class _AddItemState extends State<AddItem> {
             fontWeight: FontWeight.bold,
           )),
         
-        backgroundColor: Color.fromARGB(255, 243, 159, 33),
+        backgroundColor: MyApp.primaryColor ,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -146,8 +138,26 @@ class _AddItemState extends State<AddItem> {
                           height: 150,
                           width: 150,
                           color: Colors.grey[300],
-                          child: Icon(Icons.camera_alt, size: 50),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_a_photo,
+                                size: 50,
+                                color: Colors.grey[600],
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Click to add image',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+
                 ),
                 SizedBox(height: 12.0),
                 TextFormField(
@@ -160,38 +170,6 @@ class _AddItemState extends State<AddItem> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter Name';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 12.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Price',
-                    labelStyle: TextStyle(fontSize: 18.0),
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: priceController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Price';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 12.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Quantity',
-                    labelStyle: TextStyle(fontSize: 18.0),
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: quantityController,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Quantity';
                     }
                     return null;
                   },
@@ -219,6 +197,39 @@ class _AddItemState extends State<AddItem> {
                   },
                 ),
                 SizedBox(height: 12.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Unit Price',
+                    labelStyle: TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: priceController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Unit Price';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Quantity',
+                    labelStyle: TextStyle(fontSize: 18.0),
+                    border: OutlineInputBorder(),
+                  ),
+                  controller: quantityController,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Quantity';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.0),
+                
                 TextFormField(
                   readOnly: true,
                   controller: pickedDateTextController,
@@ -264,7 +275,7 @@ class _AddItemState extends State<AddItem> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0.0),
                         ),
-                        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+                        backgroundColor: MyApp.primaryColor,
                         foregroundColor: Colors.white,
                       ),
                     ),
@@ -282,7 +293,7 @@ class _AddItemState extends State<AddItem> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(0.0),
                         ),
-                        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+                        backgroundColor: MyApp.primaryColor,
                         foregroundColor: Colors.white,
                       ),
                     ),

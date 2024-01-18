@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harvest_delivery/main.dart';
 
 import 'home_screen.dart';
 import 'item_screen.dart';
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<FarmerMainPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+        backgroundColor: MyApp.primaryColor,
 
       ),
       body: Center(
