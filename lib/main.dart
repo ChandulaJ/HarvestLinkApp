@@ -5,7 +5,7 @@ import 'package:harvest_delivery/customerSide/data/repositories/market_products_
 import 'package:harvest_delivery/customerSide/view/pages/home_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/main_page.dart';
 import 'package:harvest_delivery/customerSide/view/pages/order_placed_page.dart';
-import 'package:harvest_delivery/farmerSide/views/login_screen.dart';
+
 
 import 'common/views/pages/signin_page.dart';
 import 'farmerSide/views/main_page.dart';
@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
       //home: const MainPage(title: 'Harvest Link'),
      // home: SignInPage(),
       //home:OrderPlacedPage(),
-home: CustomerMainPage(),
+//home: CustomerMainPage(),
+    home:FarmerMainPage(),
 
     );
   }

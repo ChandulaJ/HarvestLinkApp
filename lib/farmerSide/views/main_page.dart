@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:harvest_delivery/views/home_screen.dart';
-import 'package:harvest_delivery/views/item_screen.dart';
-import 'package:harvest_delivery/views/order_screen.dart';
-import 'package:harvest_delivery/views/settings_screen.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.title}) : super(key: key);
+import 'home_screen.dart';
+import 'item_screen.dart';
+import 'order_screen.dart';
+import 'settings_screen.dart';
 
-  final String title;
+class FarmerMainPage extends StatefulWidget {
+  const FarmerMainPage({Key? key}) : super(key: key);
+
 
   @override
-  State<MainPage> createState() => _MyHomePageState();
+  State<FarmerMainPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MainPage> {
+class _MyHomePageState extends State<FarmerMainPage> {
   int _selectedIndex =
       0; // Index of the currently selected bottom navigation item
 
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MainPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 243, 159, 33),
-        //title: Text(widget.title),
+
       ),
       body: Center(
         child: _widgetOptions

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:harvest_delivery/views/order_details_screen.dart';
+
 import 'package:intl/intl.dart';
+
+import 'order_details_screen.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);

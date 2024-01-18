@@ -74,7 +74,7 @@ class AuthServices {
           .showSnackBar(SnackBar(content: Text('Registration Successful')));
       //TODO: add check to go to farmer signin too
       Navigator.of(context).pop();
-      Get.to(()=>FarmerMainPage(title: "Harvest"));
+      Get.to(()=>FarmerMainPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -118,7 +118,7 @@ class AuthServices {
       Navigator.of(context).pop();
 
       if (collectionName == 'Farmers') {
-        Get.to(() => FarmerMainPage(title: "Harvest"));
+        Get.to(() => FarmerMainPage());
       } else if (collectionName == 'Customers') {
         Get.to(() => CustomerMainPage());
       } else {
@@ -160,7 +160,7 @@ class AuthServices {
       Navigator.of(context).pop();
 
       if (collectionName == 'Farmers') {
-        Get.to(() => FarmerMainPage(title: "Harvest"));
+        Get.to(() => FarmerMainPage());
       } else if (collectionName == 'Customers') {
         Get.to(() => CustomerMainPage());
       } else {
