@@ -23,6 +23,8 @@ class HomePageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     print('img: $img, productName: $productName, price: $price, product_index: $product_index');
+   
     return Container(
       margin: EdgeInsets.all(10.0),
       padding: EdgeInsets.all(10.0),

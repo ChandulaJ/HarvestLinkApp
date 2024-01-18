@@ -38,8 +38,7 @@ class HomePageController extends GetxController {
   void cartAddBtnPressed(int index, double qty) {
     ProductDataModel productToAdd = marketItems[index];
 
-    // productToAdd = productToAdd.copyWith(quantity: qty);
-    // cartController.cartItems.add(productToAdd);
+    
     cartController.addToCart(productToAdd);
 
     showSnackBar();
