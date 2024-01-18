@@ -37,6 +37,7 @@ class FilledCart extends StatelessWidget {
                   price: product.price,
                   quantity: product.quantity,
                 ),
+
               );
             },
           ),

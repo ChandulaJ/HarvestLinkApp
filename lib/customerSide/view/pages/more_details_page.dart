@@ -110,7 +110,7 @@ class _MoreDetailsPageState extends State<MoreDetailsPage> {
               alignment: Alignment.bottomCenter,
               child: FilledButton(
                 onPressed: () {
-                  homePageController.cartAddBtnPressed(widget.itemIndex,buycount);
+                  homePageController.cartAddBtnPressed(widget.itemIndex,buycount.toDouble());
                   Get.to(CustomerMainPage());
                 },
                 child: Text(
