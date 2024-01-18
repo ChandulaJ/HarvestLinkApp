@@ -16,7 +16,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   void initState() {
     super.initState();
     homePageController.setContext(context);
-    homePageController.fetchData(); 
+    homePageController.fetchMarketData();
   }
   @override
   Widget build(BuildContext context) {

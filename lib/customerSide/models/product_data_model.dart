@@ -5,6 +5,7 @@ class ProductDataModel {
   final String imageUrl;
   final String unit;
    final double quantity;
+   final String userId;
 
   ProductDataModel({
     required this.id,
@@ -13,6 +14,7 @@ class ProductDataModel {
     required this.imageUrl,
     required this.unit,
     required this.quantity,
+    required this.userId,
   });
 
   ProductDataModel copyWith({
@@ -22,6 +24,7 @@ class ProductDataModel {
     String? imageUrl,
     String? unit,
     double? quantity,
+    String? userId,
   }) {
     return ProductDataModel(
       id: id ?? this.id,
@@ -30,6 +33,7 @@ class ProductDataModel {
       imageUrl: imageUrl ?? this.imageUrl,
       unit: unit ?? this.unit,
       quantity: quantity ?? this.quantity,
+      userId: userId ?? this.userId
     );
   }
 
@@ -42,6 +46,18 @@ class ProductDataModel {
       imageUrl: map['Image'] ?? '',
       unit: map['Unit'] ?? '',
       quantity: map['Quantity']?? 0.0,
+      userId: map['UserId'] ?? '',
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'imageUrl':imageUrl,
+      'unit':unit,
+      'quantity':quantity,
+      'userId':userId,
+    };
   }
 }

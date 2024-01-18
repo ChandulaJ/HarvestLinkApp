@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:harvest_delivery/customerSide/data/repositories/cart_products_repository.dart';
 import 'package:harvest_delivery/customerSide/data/repositories/market_products_repository.dart';
 
 import 'cart_page_controller.dart';
 import '../models/product_data_model.dart';
 
 class HomePageController extends GetxController {
-    final MarketProductsRepository _repository = MarketProductsRepository();
+    final MarketProductsRepository _market_repository = MarketProductsRepository();
+
   late BuildContext context;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -18,14 +20,15 @@ class HomePageController extends GetxController {
 
   final RxList<ProductDataModel> marketItems = <ProductDataModel>[].obs;
 
+
   final RxInt selectedTabIndex = 0.obs;
   final RxString searchValue = ''.obs;
 
-    Future<void> fetchData() async {
+    Future<void> fetchMarketData() async {
       try {
-        print("fetching data");
+        print("fetching market data");
         List<ProductDataModel> fetchedItems =
-        await _repository.fetchMarketItems();
+        await _market_repository.fetchMarketItems();
         marketItems.assignAll(fetchedItems);
       } catch (e) {
         print("Error fetching market items: $e");
