@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:harvest_delivery/main.dart';
+import 'package:intl/intl.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final String orderId;
 
   const OrderDetailsScreen({Key? key, required this.orderId}) : super(key: key);
 
-Widget _buildDetailRow(IconData icon, String value) {
+  Widget _buildDetailRow(IconData icon, String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -16,9 +18,18 @@ Widget _buildDetailRow(IconData icon, String value) {
           children: [
             Icon(icon, size: 24),
             SizedBox(width: 12),
-            Text(
-              value,
-              style: TextStyle(fontSize: 18),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
             ),
           ],
         ),
@@ -26,7 +37,6 @@ Widget _buildDetailRow(IconData icon, String value) {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +48,10 @@ Widget _buildDetailRow(IconData icon, String value) {
             fontSize: 20,
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 243, 159, 33),
+        backgroundColor: MyApp.primaryColor,
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future:
-            FirebaseFirestore.instance.collection('Orders').doc(orderId).get(),
+        future: FirebaseFirestore.instance.collection('Orders').doc(orderId).get(),
         builder: (context, snapshot) {
           try {
             if (snapshot.hasError) {
@@ -54,14 +63,12 @@ Widget _buildDetailRow(IconData icon, String value) {
             }
             final orderData = snapshot.data!.data() as Map<String, dynamic>;
 
-            // Fetch customer details from Customers collection
             Future<Map<String, dynamic>> getCustomerDetails() async {
               try {
-                DocumentSnapshot customerSnapshot =
-                    await FirebaseFirestore.instance
-                        .collection('Customers')
-                        .doc(orderData['CustomerId'])
-                        .get();
+                DocumentSnapshot customerSnapshot = await FirebaseFirestore.instance
+                    .collection('Customers')
+                    .doc(orderData['CustomerId'])
+                    .get();
                 return customerSnapshot.data() as Map<String, dynamic>;
               } catch (e) {
                 print('Error fetching customer details: $e');
@@ -71,7 +78,6 @@ Widget _buildDetailRow(IconData icon, String value) {
 
             final items = orderData['Items'] as List<dynamic>;
 
-            // Function to calculate the total amount
             double calculateTotalAmount() {
               double totalAmount = 0.0;
               for (var item in items) {
@@ -81,6 +87,9 @@ Widget _buildDetailRow(IconData icon, String value) {
               return totalAmount;
             }
 
+            DateTime orderDateTime = (orderData['DateTime'] as Timestamp).toDate();
+            String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(orderDateTime);
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -88,45 +97,49 @@ Widget _buildDetailRow(IconData icon, String value) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 12),
-                   FutureBuilder<Map<String, dynamic>>(
-  future: getCustomerDetails(),
-  builder: (context, customerSnapshot) {
-    String customerName = customerSnapshot.data?['Name'] ?? 'N/A';
-    String customerAddress = customerSnapshot.data?['Address'] ?? 'N/A';
-    String customerPhone = customerSnapshot.data?['Phone number'] ?? 'N/A';
+                    FutureBuilder<Map<String, dynamic>>(
+                      future: getCustomerDetails(),
+                      builder: (context, customerSnapshot) {
+                        String customerName = customerSnapshot.data?['Name'] ?? 'N/A';
+                        String customerAddress = customerSnapshot.data?['Address'] ?? 'N/A';
+                        String customerPhone = customerSnapshot.data?['Phone number'] ?? 'N/A';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildDetailRow(Icons.person,  customerName),
-        _buildDetailRow(Icons.location_on, customerAddress),
-        _buildDetailRow(Icons.phone, customerPhone),
-        SizedBox(height: 12),
-      ],
-    );
-  },
-),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildDetailRow(Icons.person, 'Customer Name:', customerName),
+                            _buildDetailRow(Icons.location_on, 'Customer Address:', customerAddress),
+                            _buildDetailRow(Icons.phone, 'Customer Phone:', customerPhone),
+                            SizedBox(height: 12),
+                          ],
+                        );
+                      },
+                    ),
                     Divider(),
-                    
+
+                    _buildDetailRow(Icons.date_range, 'Order Date and Time:', formattedDateTime),
+                    _buildDetailRow(Icons.category, 'Order Status:', orderData['Status'] ?? 'N/A'),
+                    Divider(),
                     SizedBox(height: 4),
-                    // Display a bill-like structure
-                    DataTable(
+                    SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: 16, // Adjust the spacing between columns as needed
                       columns: [
                         DataColumn(label: Text('Product', style: TextStyle(fontSize: 15))),
-                        DataColumn(label: Text('Quantity', style: TextStyle(fontSize: 15))),
-                        DataColumn(label: Text('Amount', style: TextStyle(fontSize: 15))),
+                        DataColumn(label: Text('Qty', style: TextStyle(fontSize: 15))),
+                        DataColumn(label: Text('Unit Price (Rs.)', style: TextStyle(fontSize: 15))),
+                        DataColumn(label: Text('Amount (Rs.)', style: TextStyle(fontSize: 15))),
                       ],
                       rows: items.map<DataRow>((item) {
                         String productId = item['ProductId'] as String;
 
-                        // Fetch product details from MarketProducts collection
                         Future<Map<String, dynamic>> getProductDetails() async {
                           try {
-                            DocumentSnapshot productSnapshot =
-                                await FirebaseFirestore.instance
-                                    .collection('MarketProducts')
-                                    .doc(productId)
-                                    .get();
+                            DocumentSnapshot productSnapshot = await FirebaseFirestore.instance
+                                .collection('MarketProducts')
+                                .doc(productId)
+                                .get();
                             return productSnapshot.data() as Map<String, dynamic>;
                           } catch (e) {
                             print('Error fetching product details: $e');
@@ -137,59 +150,77 @@ Widget _buildDetailRow(IconData icon, String value) {
                         return DataRow(
                           cells: [
                             DataCell(
-                              FutureBuilder<Map<String, dynamic>>(
-                                future: getProductDetails(),
-                                builder: (context, productSnapshot) {
-                                  String productName =
-                                      productSnapshot.data?['Name'] ?? 'N/A';
-                                  return Text(
-                                    productName,
-                                    style: TextStyle(fontSize: 14),
-                                  );
-                                },
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: FutureBuilder<Map<String, dynamic>>(
+                                  future: getProductDetails(),
+                                  builder: (context, productSnapshot) {
+                                    String productName = productSnapshot.data?['Name'] ?? 'N/A';
+                                    String unit = productSnapshot.data?['Unit'] ?? 'N/A';
+
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          productName,
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        Text(
+                                          '($unit)',
+                                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                             DataCell(
-                              Text(
-                                '${item['Quantity']}',
-                                style: TextStyle(fontSize: 14),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  '${item['Quantity']}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
                               ),
                             ),
                             DataCell(
-                              Text(
-                                '\Rs. ${(item['Quantity'] as int) * (item['UnitPrice'] as double)}',
-                                style: TextStyle(fontSize: 14),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: FutureBuilder<Map<String, dynamic>>(
+                                  future: getProductDetails(),
+                                  builder: (context, productSnapshot) {
+                                    double unitPrice = productSnapshot.data?['Price'] ?? 0.0;
+
+                                    return Text(
+                                      '${unitPrice.toStringAsFixed(2)}',
+                                      style: TextStyle(fontSize: 15),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  '${((item['Quantity'] as int) * (item['UnitPrice'] as double)).toStringAsFixed(2)}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
                               ),
                             ),
                           ],
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 12),
+                  ),
+
+                    SizedBox(height: 20),
                     Text(
                       'Total Amount: \Rs. ${calculateTotalAmount().toStringAsFixed(2)}',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add your logic for accepting the order
-                        // For example, you can update the order status in Firestore
-                        // or navigate to a new screen
-                      },
-                      child: Text(
-                        'Accept',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0.0),
-                        ),
-                        backgroundColor: Color.fromARGB(255, 243, 159, 33),
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
                   ],
                 ),
               ),

@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:harvest_delivery/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:image/image.dart' as img;
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/harvest.dart';
 
@@ -23,8 +25,8 @@ class _UpdateItemState extends State<UpdateItem> {
 
   final _picker = ImagePicker();
   late File _image = File('');
-  // Updating Item
-  CollectionReference items = FirebaseFirestore.instance.collection('MarketProducts');
+  CollectionReference items =
+      FirebaseFirestore.instance.collection('MarketProducts');
 
   bool isValidImage(File file) {
     try {
@@ -36,25 +38,20 @@ class _UpdateItemState extends State<UpdateItem> {
     }
   }
 
-  Future<void> updateItem(Harvest harvest) async{
+  Future<void> updateItem(Harvest harvest) async {
     String imageUrl = '';
 
-     if (_image.path.isNotEmpty && isValidImage(_image)) {
-      // Generate a unique image name using current date and time
+    if (_image.path.isNotEmpty && isValidImage(_image)) {
       String imageName = DateTime.now().toString() + '.jpg';
 
-      // Upload the new image to Firebase Storage with the generated name
       Reference storageReference =
-      FirebaseStorage.instance.ref().child('item_images').child(imageName);
+          FirebaseStorage.instance.ref().child('item_images').child(imageName);
       UploadTask uploadTask = storageReference.putFile(_image);
 
-      // Wait for the upload to complete
       await uploadTask.whenComplete(() async {
-        // Get the download URL after the upload is complete
         imageUrl = await storageReference.getDownloadURL();
         harvest.image = imageUrl;
 
-        // Update the item in Firestore with the new image URL
         await items
             .doc(widget.id)
             .update({
@@ -64,6 +61,7 @@ class _UpdateItemState extends State<UpdateItem> {
               'Unit': harvest.unit,
               'HarvestedDate': harvest.harvestedDate,
               'ImageUrl': harvest.image,
+              'FarmerId': harvest.farmerId,
             })
             .then((value) => print("Item Updated"))
             .catchError((error) => print("Failed to update item: $error"));
@@ -78,11 +76,12 @@ class _UpdateItemState extends State<UpdateItem> {
             'StockQuantity': harvest.quantity,
             'Unit': harvest.unit,
             'HarvestedDate': harvest.harvestedDate,
+            'FarmerId': harvest.farmerId,
           })
           .then((value) => print("Item Updated"))
           .catchError((error) => print("Failed to update item: $error"));
     }
-  
+
     return items
         .doc(widget.id)
         .update({
@@ -91,6 +90,7 @@ class _UpdateItemState extends State<UpdateItem> {
           'StockQuantity': harvest.quantity,
           'Unit': harvest.unit,
           'HarvestedDate': harvest.harvestedDate,
+          'FarmerId': harvest.farmerId,
         })
         .then((value) => print("Item Updated"))
         .catchError((error) => print("Failed to update item: $error"));
@@ -113,10 +113,13 @@ class _UpdateItemState extends State<UpdateItem> {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Update Item", style: TextStyle(
+        title: Text(
+          "Update Item",
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-          ),),
-        backgroundColor: Color.fromARGB(255, 243, 159, 33),
+          ),
+        ),
+        backgroundColor: MyApp.primaryColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -156,7 +159,6 @@ class _UpdateItemState extends State<UpdateItem> {
                 // Handle the case when 'HarvestedDate' is null
                 // You can assign a default value or perform some other logic
               }
-              //final harvestedDate = DateFormat('K:mm:ss').format(dateTime);
 
               Harvest harvest = Harvest(
                 produceId: widget.id,
@@ -165,8 +167,8 @@ class _UpdateItemState extends State<UpdateItem> {
                 quantity: data['StockQuantity'],
                 unit: data['Unit'],
                 harvestedDate: harvestedDate ?? DateTime.now(),
-                image: '', // You need to set the appropriate value or handle it
-                // farmer: Farmer(), // You may need to provide appropriate data for the farmer
+                image: '',
+                farmerId: FirebaseAuth.instance.currentUser!.uid,
               );
 
               return Form(
@@ -174,7 +176,7 @@ class _UpdateItemState extends State<UpdateItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                     Container(
+                    Container(
                       height: 150,
                       width: 150,
                       decoration: BoxDecoration(
@@ -186,7 +188,7 @@ class _UpdateItemState extends State<UpdateItem> {
                         ),
                       ),
                     ),
-                     ElevatedButton(
+                    ElevatedButton(
                       onPressed: pickImage,
                       child: Text('Change Image'),
                     ),
@@ -210,11 +212,29 @@ class _UpdateItemState extends State<UpdateItem> {
                             globalKey.currentContext?.findRenderObject();
                         object?.showOnScreen();
                       },
+                      controller: TextEditingController(text: harvest.unit),
+                      onChanged: (value) => harvest.unit = value,
+                      decoration: InputDecoration(
+                        labelText: 'Unit',
+                        labelStyle: TextStyle(fontSize: 18.0),
+                        border: OutlineInputBorder(),
+                        errorStyle:
+                            TextStyle(color: Colors.redAccent, fontSize: 15),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    TextFormField(
+                      onTap: () async {
+                        await Future.delayed(Duration(milliseconds: 500));
+                        RenderObject? object =
+                            globalKey.currentContext?.findRenderObject();
+                        object?.showOnScreen();
+                      },
                       controller:
                           TextEditingController(text: harvest.price.toString()),
                       onChanged: (value) => harvest.price = double.parse(value),
                       decoration: InputDecoration(
-                        labelText: 'Price',
+                        labelText: 'Unit Price',
                         labelStyle: TextStyle(fontSize: 18.0),
                         border: OutlineInputBorder(),
                         errorStyle:
@@ -241,25 +261,6 @@ class _UpdateItemState extends State<UpdateItem> {
                       ),
                     ),
                     SizedBox(height: 12),
-                    TextFormField(
-                      onTap: () async {
-                        await Future.delayed(Duration(milliseconds: 500));
-                        RenderObject? object =
-                            globalKey.currentContext?.findRenderObject();
-                        object?.showOnScreen();
-                      },
-                      controller: TextEditingController(text: harvest.unit),
-                      onChanged: (value) => harvest.unit = value,
-                      decoration: InputDecoration(
-                        labelText: 'Unit',
-                        labelStyle: TextStyle(fontSize: 18.0),
-                        border: OutlineInputBorder(),
-                        errorStyle:
-                            TextStyle(color: Colors.redAccent, fontSize: 15),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    // DatePicker for Harvested Date
                     TextFormField(
                       readOnly: true,
                       controller: pickedDateTextController,
@@ -299,7 +300,7 @@ class _UpdateItemState extends State<UpdateItem> {
                           borderRadius: BorderRadius.circular(0.0),
                         ),
                         minimumSize: Size(double.infinity, 50),
-                        backgroundColor: const Color.fromARGB(255, 243, 159, 33),
+                        backgroundColor: MyApp.primaryColor,
                         foregroundColor: Colors.white,
                       ),
                     ),
